@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime
 
+
 ########################################
 # LAYOUT CONFIG
 ########################################
@@ -37,6 +38,7 @@ def import_data():
     url_afastamentos_novo = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=1934526132&single=true&output=csv'
     url_abono = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=144957376&single=true&output=csv'
     url_ferias = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=215396885&single=true&output=csv'
+    url_gratificacao = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_VQ0HgYseWkqwKBHTumQz7AFjLolLqLRVyobeYlqn6eJzKFvuKa_k5BJO3FLikXxuVT9/pub?gid=1631165264&single=true&output=csv'
 
     dados = {}
 
@@ -45,8 +47,10 @@ def import_data():
     dados['afastamentos'] = pd.read_csv(url_afastamentos_novo)
     dados['ferias'] = pd.read_csv(url_ferias)
     dados['abono'] = pd.read_csv(url_abono)
+    dados['cargos'] = pd.read_csv(url_cargos)
+    dados['gratificacao'] = pd.read_csv(url_gratificacao)
     
-    st.write('Dados extraídos da internet. Tratando dados')
+    ############################################### 
     # Conversão de tipos
 
     dados['afastamentos']['Primeiro dia de afastamento'] = pd.to_datetime(dados['afastamentos']['Primeiro dia de afastamento'], dayfirst=True).dt.date
@@ -62,6 +66,22 @@ def import_data():
     dados['ferias']['2º Período - último dia'] = pd.to_datetime(dados['ferias']['2º Período - último dia'], dayfirst=True).dt.date
     dados['ferias']['3º Período - início'] = pd.to_datetime(dados['ferias']['3º Período - início'], dayfirst=True).dt.date
     dados['ferias']['3º Período - último dia'] = pd.to_datetime(dados['ferias']['3º Período - último dia'], dayfirst=True).dt.date
+
+    dados['servidores']['Posto ou Graduação']       = dados['servidores']['Posto ou Graduação'].fillna('')
+    dados['servidores']['Quadro QOBM/QBMG']         = dados['servidores']['Quadro QOBM/QBMG'].fillna('')
+    dados['servidores']['Efetividade']              = dados['servidores']['Efetividade'].fillna('')
+    dados['servidores']['Cidade']                   = dados['servidores']['Cidade'].fillna('')
+    dados['servidores']['Sexo']                     = dados['servidores']['Sexo'].fillna('')
+    dados['servidores']['Horário de trabalho']      = dados['servidores']['Horário de trabalho'].fillna('')
+    dados['servidores']['Atividade predominante']   = dados['servidores']['Atividade predominante'].fillna('')
+    dados['servidores']['Local de Trabalho'] = dados['servidores']['Local de Trabalho'].fillna('')
+
+
+
+    dados['servidores']['Matrícula na SSP'] = dados['servidores']['Matrícula na SSP'].astype('int32')
+    dados['ferias']['Chave'] = dados['ferias']['Chave'].astype('int32')
+    dados['abono']['Chave'] = dados['abono']['Chave'].astype('int32')
+    #dados['cargos']['Ocupante'] = dados['cargos']['Ocupante'].astype('int32') # problemas com NA?
 
     # Gera DF de dias com afastamento
     ## Formato
@@ -118,7 +138,7 @@ def import_data():
         lista_afast.append({'Matrícula': row['Matrícula SSP'], 'Dia': dados['abono']['5º dia'].iloc[0].strftime("%Y-%m-%d"), 'Motivo': 'Abono anual'})
 
     ## Totalização
-    st.write('Convertendo datas')
+    # st.write('Convertendo datas')
     dados['dias_afastamento'] = pd.DataFrame(lista_afast)
     dados['dias_afastamento']['Dia'] = pd.to_datetime(dados['dias_afastamento']['Dia'], format="%Y-%m-%d").dt.date
 
@@ -141,10 +161,10 @@ st.markdown("# CONTROLE DE SERVIDORES DA SUDEC 👨‍👦‍👦")
 st.link_button("Caso tenha acesso, acesse a planilha completa no Google", "https://docs.google.com/spreadsheets/d/1eQ5PXgKFeKUFibGWYWA3QzKGFB9HUNHguO2Cixtypt4/edit?gid=0#gid=0")
 
 if st.button("Atualizar dados"):
-    st.write('Solicitação de atualização feita')
+    st.write('Solicitação de atualização feita. Aguarde.')
     dados = import_data()
     st.session_state['data'] = dados
-    st.write('Dados Atualizados')
+    st.write('Dados Atualizados!')
 
 
 
