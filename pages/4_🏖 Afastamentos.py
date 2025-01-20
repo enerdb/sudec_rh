@@ -16,7 +16,7 @@ st.set_page_config(
 
 dados = st.session_state['data']
 df_afastamentos = dados['dias_afastamento']
-df_servidores = dados['servidores']
+df_servidores = dados['serv_total']
 
 
 #####################

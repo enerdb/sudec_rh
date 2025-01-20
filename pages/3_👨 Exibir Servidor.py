@@ -2,12 +2,13 @@ import streamlit as st
 
 st.set_page_config(
     page_title="Servidores",
-    page_icon='📄',
+    page_icon='👨',
     layout = 'wide'
 )
 
 dados = st.session_state['data']
-df_servidores = dados['servidores']
+df_servidores = dados['serv_total'] 
+#df_servidores = dados['servidores'] 
 df_ferias = dados['ferias']
 df_abono = dados['abono']
 df_afastamentos = dados['afastamentos']

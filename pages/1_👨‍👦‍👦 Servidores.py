@@ -4,11 +4,13 @@ import pandas as pd
 
 st.set_page_config(
     page_title="Servidores",
-    page_icon='📄',
+    page_icon='👨‍👦‍👦',
     layout = 'wide'
 )
 
-df_data = st.session_state['data']['servidores']
+#df_data = st.session_state['data']['servidores']
+df_data = st.session_state['data']['serv_total']
+
 
 
 

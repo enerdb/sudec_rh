@@ -39,17 +39,22 @@ def import_data():
     url_abono = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=144957376&single=true&output=csv'
     url_ferias = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=215396885&single=true&output=csv'
     url_gratificacao = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_VQ0HgYseWkqwKBHTumQz7AFjLolLqLRVyobeYlqn6eJzKFvuKa_k5BJO3FLikXxuVT9/pub?gid=1631165264&single=true&output=csv'
+    url_nom_invalid = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_VQ0HgYseWkqwKBHTumQz7AFjLolLqLRVyobeYlqn6eJzKFvuKa_k5BJO3FLikXxuVT9/pub?gid=987765631&single=true&output=csv'
 
     dados = {}
 
     # Extrai os dados
     dados['servidores'] = pd.read_csv(url_servidores_nomeados)
-    dados['afastamentos'] = pd.read_csv(url_afastamentos_novo)
-    dados['ferias'] = pd.read_csv(url_ferias)
-    dados['abono'] = pd.read_csv(url_abono)
-    dados['cargos'] = pd.read_csv(url_cargos)
-    dados['gratificacao'] = pd.read_csv(url_gratificacao)
+    #["Matrícula na SSP","Nome Completo","Nome de Guerra (preferencial se civil)","Efetividade","Posto ou Graduação","Quadro QOBM/QBMG","Cidade","Sexo", "Horário de trabalho", "Atividade predominante", "Local de Trabalho"]
+    dados['afastamentos'] = pd.read_csv(url_afastamentos_novo) # ["Carimbo de data/hora", "Matrícula SSP", "Primeiro dia de afastamento", 'Último dia de afastamento", "Tipo de afastamento", "Processo SEI"]
+    dados['ferias'] = pd.read_csv(url_ferias) # ["Chave", "Carimbo de data/hora", "Matrícula SSP", "Exercício", "1º Período - início", "1º Período - último dia", "2º Período - início", "2º Período - último dia", '3º Período - início", "3º Período - último dia", "SEI"]
+    dados['abono'] = pd.read_csv(url_abono) # [Chave", "Carimbo de data/hora", "Matrícula SSP", "Ano do gozo", "1º dia", "2º dia", "3º dia", "4º dia", "5º dia","SEI"]
+    dados['cargos'] = pd.read_csv(url_cargos) # ["ID", "CARGO EM COMISSÃO", "Cargo", "Setor", "SIGRH - FUNÇÃO (DEC 46.117)", "Gratificação", "NC_padronizado", "Seq", "Ocupante"]
+    dados['gratificacao'] = pd.read_csv(url_gratificacao) # ["Gratificação", "Salário"]
+    dados['nom_invalid'] = pd.read_csv(url_nom_invalid) # ['Matrícula SSP','Cargo','GRATIFICAÇÃO', 'SETOR', 'Data de nomeação', 'Data_min_exon']
+    dados['historico'] = pd.read_csv(url_servidores_historico)
     
+    #["Matrícula na SSP","Nome Completo","Nome de Guerra (preferencial se civil)","Efetividade","Posto ou Graduação","Quadro QOBM/QBMG","Cidade","Sexo", "Horário de trabalho", "Atividade predominante", "Local de Trabalho"]
     ############################################### 
     # Conversão de tipos
 
@@ -75,12 +80,25 @@ def import_data():
     dados['servidores']['Horário de trabalho']      = dados['servidores']['Horário de trabalho'].fillna('')
     dados['servidores']['Atividade predominante']   = dados['servidores']['Atividade predominante'].fillna('')
     dados['servidores']['Local de Trabalho'] = dados['servidores']['Local de Trabalho'].fillna('')
-
-
-
     dados['servidores']['Matrícula na SSP'] = dados['servidores']['Matrícula na SSP'].astype('int32')
+
+    dados['historico']['Posto ou Graduação']       = dados['historico']['Posto ou Graduação'].fillna('')
+    dados['historico']['Quadro QOBM/QBMG']         = dados['historico']['Quadro QOBM/QBMG'].fillna('')
+    dados['historico']['Efetividade']              = dados['historico']['Efetividade'].fillna('')
+    dados['historico']['Cidade']                   = dados['historico']['Cidade'].fillna('')
+    dados['historico']['Sexo']                     = dados['historico']['Sexo'].fillna('')
+    dados['historico']['Horário de trabalho']      = dados['historico']['Horário de trabalho'].fillna('')
+    dados['historico']['Atividade predominante']   = dados['historico']['Atividade predominante'].fillna('')
+    dados['historico']['Local de Trabalho'] = dados['historico']['Local de Trabalho'].fillna('')
+    dados['historico']['Matrícula na SSP'] = dados['historico']['Matrícula na SSP'].astype('int32')
+
+    dados['servidores_inv'] = dados['historico'][dados['historico']["Matrícula na SSP"].isin(dados['nom_invalid']['Matrícula SSP'])]
+
+
     dados['ferias']['Chave'] = dados['ferias']['Chave'].astype('int32')
     dados['abono']['Chave'] = dados['abono']['Chave'].astype('int32')
+
+    dados['serv_total'] = pd.concat([dados['servidores'], dados['servidores_inv']], ignore_index = True)
     #dados['cargos']['Ocupante'] = dados['cargos']['Ocupante'].astype('int32') # problemas com NA?
 
     # Gera DF de dias com afastamento
