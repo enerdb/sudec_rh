@@ -32,6 +32,7 @@ if st.button("Exibir dados"):
     st.markdown(f'**Matrícula:** {matricula:.0f}')
     st.markdown(f'**Nome Completo:** {servidor['Nome Completo'].iloc[0]}')
     
+    st.write(cargo.shape[0])
 
     col1, col2 = st.columns(2)
     col1.markdown('#### Dados funcionais')
@@ -40,10 +41,16 @@ if st.button("Exibir dados"):
     col1.markdown(f'**Local de Trabalho:** {servidor['Local de Trabalho'].iloc[0]}')
 
     col2.markdown('#### Informações do cargo em comissão')
-    col2.markdown(f'**Cargo:** {cargo['Cargo'].iloc[0]}')
-    col2.markdown(f'**Setor:** {cargo['Setor'].iloc[0]}')
-    col2.markdown(f'**SIGRH:** {cargo['SIGRH - FUNÇÃO (DEC 46.117)'].iloc[0]:.0f}')
-    col2.markdown(f'**Gratificação:** {cargo['Gratificação'].iloc[0]}')
+    
+
+
+    if(cargo.shape[0]>0):
+        col2.markdown(f'**Cargo:** {cargo['Cargo'].iloc[0]}')
+        col2.markdown(f'**Setor:** {cargo['Setor'].iloc[0]}')
+        col2.markdown(f'**SIGRH:** {cargo['SIGRH - FUNÇÃO (DEC 46.117)'].iloc[0]:.0f}')
+        col2.markdown(f'**Gratificação:** {cargo['Gratificação'].iloc[0]}')
+    else:
+        col2.markdown('**O servidor não está nomeado em um cargo válido**')
 
     
 
