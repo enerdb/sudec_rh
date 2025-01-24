@@ -99,6 +99,15 @@ def import_data():
     dados['abono']['Chave'] = dados['abono']['Chave'].astype('int32')
 
     dados['serv_total'] = pd.concat([dados['servidores'], dados['servidores_inv']], ignore_index = True)
+
+    dados['serv_total'] = dados['serv_total'][~dados['serv_total']['Matrícula na SSP'].duplicated(keep='first')]
+
+    matriculas_to_drop = dados['servidores']['Matrícula na SSP']
+    #print(matriculas_to_drop)
+
+
+    dados['servidores_inv'] = dados['serv_total'][~dados['serv_total']['Matrícula na SSP'].isin(matriculas_to_drop)]
+
     #dados['cargos']['Ocupante'] = dados['cargos']['Ocupante'].astype('int32') # problemas com NA?
 
     # Gera DF de dias com afastamento

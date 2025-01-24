@@ -15,7 +15,12 @@ dados = st.session_state['data']
 df_invalidos = dados['servidores_inv']
 #["Matrícula na SSP","Nome Completo","Nome de Guerra (preferencial se civil)","Efetividade","Posto ou Graduação","Quadro QOBM/QBMG","Cidade","Sexo", "Horário de trabalho", "Atividade predominante", "Local de Trabalho"]
 
+matr_inv = df_invalidos['Matrícula na SSP']
+
+
 df_nom_invalid = dados['nom_invalid'] # ['Matrícula SSP','Cargo','GRATIFICAÇÃO', 'SETOR', 'Data de nomeação', 'Data_min_exon']
+df_nom_invalid = df_nom_invalid[df_nom_invalid['Matrícula SSP'].isin(matr_inv)]
+
 
 df_cargos = dados['cargos']
 
