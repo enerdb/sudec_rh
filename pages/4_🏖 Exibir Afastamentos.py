@@ -60,7 +60,6 @@ if st.sidebar.button("Exibir dados"):
         
        
         df_afast_filtered = df_afastamentos[(df_afastamentos['Dia']>=dia_i) & (df_afastamentos['Dia']<=dia_f)][['Matrícula','Dia']]
-        st.write(len(df_afast_filtered))
         df_primeiro_dia = df_afast_filtered.groupby(['Matrícula']).min().rename(columns={"Dia": "Primeiro Dia"})
         df_ultimo_dia = df_afast_filtered.groupby(['Matrícula']).max().rename(columns={"Dia": "Último Dia"})
 
@@ -76,8 +75,7 @@ if st.sidebar.button("Exibir dados"):
         columns_afast_display = ['Matrícula na SSP', 'Nome Completo', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Cidade', 'Primeiro Dia', 'Último Dia']
         columns_disponivel_display = ['Matrícula na SSP', 'Nome Completo', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Cidade']
 
- 
-    
+  
         st.markdown(f'#### Servidores afastados no período')
         df_toprint = df_servidores_afastados[columns_afast_display].reset_index(drop=True)
         df_toprint.index +=1
@@ -101,30 +99,3 @@ if st.sidebar.button("Exibir dados"):
             }
         )
 
-#############################################
-
-    
-
-
-
-
-#st.dataframe(df_afastamentos)
-
-#st.write(df_afastamentos['Dia'].dtypes)
-
-#for evento in eventos:
-#      
-#    inicio = new Date(datasIniciais[i][0])
-#    fim = new Date(datasFinais[i][0])
-# 
-#    for (var data = new Date(inicio); data <= fim; data.setDate(data.getDate() + 1)):
-#        resultado.push([evento, new Date(data)])
-          
-
-
-# Formato da saída:
-
-
-#Matricula, # Dia afastado, Motivo
-
-#df = pd.concat([pd.DataFrame([[1,2]], columns=df.columns), df], ignore_index=True)

@@ -18,7 +18,8 @@ tabelas = [
     'nom_invalid',
     'historico',
     'servidores_inv',
-    'serv_total'
+    'serv_total',
+    'novo_abono'
 ]
 
 for tabela in tabelas:

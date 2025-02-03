@@ -63,12 +63,12 @@ if st.button("Exibir dados"):
         df_ferias[df_ferias['Matrícula SSP']==matricula][colunas].set_index('Exercício'),
         column_config = {
             'Exercício': st.column_config.NumberColumn(format = '%d'),
-            '1º Período - início': st.column_config.DateColumn(format = 'DD/MM/YYY'),
-            '1º Período - último dia': st.column_config.DateColumn(format = 'DD/MM/YYY'),
+            '1º Período - início': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
+            '1º Período - último dia': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
             '2º Período - início': st.column_config.DateColumn(format = 'DD/MM/YYY'),
-            '2º Período - último dia': st.column_config.DateColumn(format = 'DD/MM/YYY'),
+            '2º Período - último dia': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
             '3º Período - início': st.column_config.DateColumn(format = 'DD/MM/YYY'),
-            '3º Período - último dia': st.column_config.DateColumn(format = 'DD/MM/YYY')
+            '3º Período - último dia': st.column_config.DateColumn(format = 'DD/MM/YYYY')
         }
     )
 
@@ -81,11 +81,11 @@ if st.button("Exibir dados"):
         df_abono[df_abono['Matrícula SSP']==matricula][colunas].set_index('Ano do gozo'),
         column_config = {
             'Ano do gozo': st.column_config.NumberColumn(format = '%d'),
-            '1º dia': st.column_config.DateColumn(format = 'DD/MM/YYY'),
-            '2º dia': st.column_config.DateColumn(format = 'DD/MM/YYY'),
-            '3º dia': st.column_config.DateColumn(format = 'DD/MM/YYY'),
-            '4º dia': st.column_config.DateColumn(format = 'DD/MM/YYY'),
-            '5º dia': st.column_config.DateColumn(format = 'DD/MM/YYY')
+            '1º dia': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
+            '2º dia': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
+            '3º dia': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
+            '4º dia': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
+            '5º dia': st.column_config.DateColumn(format = 'DD/MM/YYYY')
             }
         )
 
@@ -96,7 +96,7 @@ if st.button("Exibir dados"):
     st.dataframe(
         df_afastamentos[df_afastamentos['Matrícula SSP']==matricula][colunas],
         column_config = {
-            'Primeiro dia de afastamento': st.column_config.DateColumn(format = 'DD/MM/YYY'),
-            'Último dia de afastamento': st.column_config.DateColumn(format = 'DD/MM/YYY')
+            'Primeiro dia de afastamento': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
+            'Último dia de afastamento': st.column_config.DateColumn(format = 'DD/MM/YYYY')
         }
     )
