@@ -19,12 +19,14 @@ tabelas = [
     'historico',
     'servidores_inv',
     'serv_total',
-    'novo_abono'
+    #'novo_abono',
+    'dias_afastamento'
 ]
 
 for tabela in tabelas:
     st.markdown(f'## {tabela}')
     st.write(dados[tabela].columns.tolist())
+    st.write(dados[tabela].dtypes)
     st.dataframe(dados[tabela].reset_index(drop=True))
 
 

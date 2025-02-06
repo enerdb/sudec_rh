@@ -1,0 +1,8 @@
+No PC da sudec os scripts estão desativados.
+
+Crie a venev com 
+    python -m venv venv
+
+Sete permissão de uso com 
+    Set-ExecutionPolicy Unrestricted -Scope Process
+    venv\Scripts\Activate.ps1

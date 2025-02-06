@@ -1,7 +1,8 @@
 import pandas as pd
 import streamlit as st
 from datetime import datetime
-
+from drive import get_sheet_from_drive, get_data_from_drive
+from datamodels.abono import trata_abono_2sys
 
 ########################################
 # LAYOUT CONFIG
@@ -36,7 +37,7 @@ def import_data():
     url_dias_afastamento = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=433320192&single=true&output=csv'
 
     url_afastamentos_novo = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=1934526132&single=true&output=csv'
-    url_abono = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=144957376&single=true&output=csv'
+    
     url_ferias = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=215396885&single=true&output=csv'
     url_gratificacao = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_VQ0HgYseWkqwKBHTumQz7AFjLolLqLRVyobeYlqn6eJzKFvuKa_k5BJO3FLikXxuVT9/pub?gid=1631165264&single=true&output=csv'
     url_nom_invalid = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_VQ0HgYseWkqwKBHTumQz7AFjLolLqLRVyobeYlqn6eJzKFvuKa_k5BJO3FLikXxuVT9/pub?gid=987765631&single=true&output=csv'
@@ -44,11 +45,22 @@ def import_data():
     dados = {}
 
     # Extrai os dados
+
+    sheet = get_sheet_from_drive()
+    df = get_data_from_drive(sheet, 'abono')
+    dados['abono'] = trata_abono_2sys(df)
+
+
+
+
+
+
+
+
     dados['servidores'] = pd.read_csv(url_servidores_nomeados)
     #["Matrícula na SSP","Nome Completo","Nome de Guerra (preferencial se civil)","Efetividade","Posto ou Graduação","Quadro QOBM/QBMG","Cidade","Sexo", "Horário de trabalho", "Atividade predominante", "Local de Trabalho"]
     dados['afastamentos'] = pd.read_csv(url_afastamentos_novo) # ["Carimbo de data/hora", "Matrícula SSP", "Primeiro dia de afastamento", 'Último dia de afastamento", "Tipo de afastamento", "Processo SEI"]
     dados['ferias'] = pd.read_csv(url_ferias) # ["Chave", "Carimbo de data/hora", "Matrícula SSP", "Exercício", "1º Período - início", "1º Período - último dia", "2º Período - início", "2º Período - último dia", '3º Período - início", "3º Período - último dia", "SEI"]
-    dados['abono'] = pd.read_csv(url_abono) # [Chave", "Carimbo de data/hora", "Matrícula SSP", "Ano do gozo", "1º dia", "2º dia", "3º dia", "4º dia", "5º dia","SEI"]
     dados['cargos'] = pd.read_csv(url_cargos) # ["ID", "CARGO EM COMISSÃO", "Cargo", "Setor", "SIGRH - FUNÇÃO (DEC 46.117)", "Gratificação", "NC_padronizado", "Seq", "Ocupante"]
     dados['gratificacao'] = pd.read_csv(url_gratificacao) # ["Gratificação", "Salário"]
     dados['nom_invalid'] = pd.read_csv(url_nom_invalid) # ['Matrícula SSP','Cargo','GRATIFICAÇÃO', 'SETOR', 'Data de nomeação', 'Data_min_exon']
@@ -60,11 +72,10 @@ def import_data():
 
     dados['afastamentos']['Primeiro dia de afastamento'] = pd.to_datetime(dados['afastamentos']['Primeiro dia de afastamento'], dayfirst=True).dt.date
     dados['afastamentos']['Último dia de afastamento'] = pd.to_datetime(dados['afastamentos']['Último dia de afastamento'], dayfirst=True).dt.date
-    dados['abono']['1º dia'] = pd.to_datetime(dados['abono']['1º dia'], dayfirst=True).dt.date
-    dados['abono']['2º dia'] = pd.to_datetime(dados['abono']['2º dia'], dayfirst=True).dt.date
-    dados['abono']['3º dia'] = pd.to_datetime(dados['abono']['3º dia'], dayfirst=True).dt.date
-    dados['abono']['4º dia'] = pd.to_datetime(dados['abono']['4º dia'], dayfirst=True).dt.date
-    dados['abono']['5º dia'] = pd.to_datetime(dados['abono']['5º dia'], dayfirst=True).dt.date
+
+
+
+
     dados['ferias']['1º Período - início'] = pd.to_datetime(dados['ferias']['1º Período - início'], dayfirst=True).dt.date
     dados['ferias']['1º Período - último dia'] = pd.to_datetime(dados['ferias']['1º Período - último dia'], dayfirst=True).dt.date
     dados['ferias']['2º Período - início'] = pd.to_datetime(dados['ferias']['2º Período - início'], dayfirst=True).dt.date
@@ -96,7 +107,7 @@ def import_data():
 
 
     dados['ferias']['Chave'] = dados['ferias']['Chave'].astype('int32')
-    dados['abono']['Chave'] = dados['abono']['Chave'].astype('int32')
+
 
     dados['serv_total'] = pd.concat([dados['servidores'], dados['servidores_inv']], ignore_index = True)
 
@@ -125,47 +136,15 @@ def import_data():
         append_dias_afast(lista_afast, row['2º Período - início'], row['2º Período - último dia'], 'Férias', row['Matrícula SSP'])
         append_dias_afast(lista_afast, row['3º Período - início'], row['3º Período - último dia'], 'Férias', row['Matrícula SSP'])
     
-
-    ## Afastamentos gerais
-#       if not (pd.isnull(row['Primeiro dia de afastamento']) and pd.isnull(row['Último dia de afastamento'])):
-#            date_range = pd.date_range(start=row['Primeiro dia de afastamento'], end=row['Último dia de afastamento'])
-#            for single_date in date_range:
-#                expanded_rows.append({'Matrícula': row['Matrícula SSP'], 'Dia': single_date, 'Motivo': row['Tipo de afastamento']})
-    
-    ## Férias
-
-
-#    for _, row in dados['ferias'].iterrows():
-#        date_range = pd.date_range(start=row['1º Período - início'], end=row['1º Período - último dia'])
-#        for single_date in date_range:
-#            expanded_rows.append({'Matrícula': row['Matrícula SSP'], 'Dia': single_date, 'Motivo': 'Férias'})
-#
-#        date_range = pd.date_range(start=row['2º Período - início'], end=row['2º Período - último dia'])
-#        for single_date in date_range:
-#            expanded_rows.append({'Matrícula': row['Matrícula SSP'], 'Dia': single_date, 'Motivo': 'Férias'})
-#
-#        date_range = pd.date_range(start=row['3º Período - início'], end=row['3º Período - último dia'])
-#        for single_date in date_range:
-#            expanded_rows.append({'Matrícula': row['Matrícula SSP'], 'Dia': single_date, 'Motivo': 'Férias'})
     
     ## Abono anual
+    cols = ['1º dia', '2º dia', '3º dia', '4º dia', '5º dia']
     for _, row in dados['abono'].iterrows():
-        #append_dias_afast(lista_afast, dados['abono']['1º dia'], dados['abono']['1º dia'], 'Abono anual', row['Matrícula SSP'])
-        #append_dias_afast(lista_afast, dados['abono']['1º dia'], dados['abono']['2º dia'], 'Abono anual', row['Matrícula SSP'])
-        #append_dias_afast(lista_afast, dados['abono']['1º dia'], dados['abono']['3º dia'], 'Abono anual', row['Matrícula SSP'])
-        #append_dias_afast(lista_afast, dados['abono']['1º dia'], dados['abono']['4º dia'], 'Abono anual', row['Matrícula SSP'])
-        #append_dias_afast(lista_afast, dados['abono']['1º dia'], dados['abono']['5º dia'], 'Abono anual', row['Matrícula SSP'])
-
-
-
-        lista_afast.append({'Matrícula': row['Matrícula SSP'], 'Dia': dados['abono']['1º dia'].iloc[0].strftime("%Y-%m-%d"), 'Motivo': 'Abono anual'})
-        lista_afast.append({'Matrícula': row['Matrícula SSP'], 'Dia': dados['abono']['2º dia'].iloc[0].strftime("%Y-%m-%d"), 'Motivo': 'Abono anual'})
-        lista_afast.append({'Matrícula': row['Matrícula SSP'], 'Dia': dados['abono']['3º dia'].iloc[0].strftime("%Y-%m-%d"), 'Motivo': 'Abono anual'})
-        lista_afast.append({'Matrícula': row['Matrícula SSP'], 'Dia': dados['abono']['4º dia'].iloc[0].strftime("%Y-%m-%d"), 'Motivo': 'Abono anual'})
-        lista_afast.append({'Matrícula': row['Matrícula SSP'], 'Dia': dados['abono']['5º dia'].iloc[0].strftime("%Y-%m-%d"), 'Motivo': 'Abono anual'})
-
+        for dia in cols:
+            if not pd.isna(row[dia]):
+                lista_afast.append({'Matrícula': row['Matrícula SSP'], 'Dia': row[dia].strftime("%Y-%m-%d"), 'Motivo': 'Abono anual'})
+        
     ## Totalização
-    # st.write('Convertendo datas')
     dados['dias_afastamento'] = pd.DataFrame(lista_afast)
     dados['dias_afastamento']['Dia'] = pd.to_datetime(dados['dias_afastamento']['Dia'], format="%Y-%m-%d").dt.date
 
@@ -175,13 +154,12 @@ def import_data():
 
 
 ########################################
-# 
+# INTERFACE
 ########################################
 
 if "data" not in st.session_state:
     dados = import_data()
     st.session_state['data'] = dados
-
 
 st.markdown("# CONTROLE DE SERVIDORES DA SUDEC 👨‍👦‍👦")
 
@@ -194,10 +172,12 @@ if st.button("Atualizar dados"):
     st.write('Dados Atualizados!')
 
 
-
-
-
-#streamlit run home.py
+########################################
+# COMMANDS
+########################################
+# Set-ExecutionPolicy Unrestricted -Scope Process
+# venv\Scripts\Activate.ps1
+# streamlit run home.py
 
 
 

@@ -6,3 +6,4 @@ with open("credentials.json", "rb") as f:
 
 # Exibir o resultado
 print(encoded_credentials)
+
