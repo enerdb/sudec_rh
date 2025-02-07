@@ -18,7 +18,8 @@ st.link_button("Registrar ou alterar atividade predominante de servidor", "https
 
 st.link_button("Cadastrar ou alterar férias", "https://forms.gle/GyZYLyVm2eFLE92i6")
 
-st.link_button("Cadastrar ou alterar abono anual","https://forms.gle/EACbK7HUKTtt5HVw8")
+# Desativado. Agora os abonos são lançados em página própria dentro do sistema.
+# st.link_button("Cadastrar ou alterar abono anual","https://forms.gle/EACbK7HUKTtt5HVw8")
 
 st.link_button("Cadastrar dipensa médica ou outro tipo de afastamento", "https://forms.gle/Yhex7dzj4pF6CD3o6")
 
