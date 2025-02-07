@@ -34,7 +34,7 @@ df_abono = dados['abono']
 # INTERFACE
 #####################
 
-
+n_abonos = 0
 col1, col2, col3 = st.columns(3)
 
 # Identifica Servidor e ano
@@ -69,59 +69,56 @@ if matricula and ano_ref:
     if df_abono_corrente.shape[0] == 0 :
         df_abono_corrente.loc[ano_ref] = [None, None, None, None, None, None]
 
-    # def safe_convert_date(value):
-    #     if pd.isna(value) or value is None:
-    #         return None
-    #     if isinstance(value, str):
-    #         return datetime.strptime(value, "%d/%m/%Y").date()
-    #     if isinstance(value, pd.Timestamp):
-    #         return value.date()
-    #     if isinstance(value, date):
-    #         return value
-    #     return None  # Fallback se vier algo inesperado
 
-    # dia1 = safe_convert_date(df_abono_corrente['1º dia'].iloc[0])
-    # dia2 = safe_convert_date(df_abono_corrente['2º dia'].iloc[0])
-    # dia3 = safe_convert_date(df_abono_corrente['3º dia'].iloc[0])
-    # dia4 = safe_convert_date(df_abono_corrente['4º dia'].iloc[0])
-    # dia5 = safe_convert_date(df_abono_corrente['5º dia'].iloc[0])
-    # sei = df_abono_corrente['SEI'].iloc[0]
-    
-    dia1 = df_abono_corrente['1º dia'].iloc[0]
-    dia2 = df_abono_corrente['2º dia'].iloc[0]
-    dia3 = df_abono_corrente['3º dia'].iloc[0]
-    dia4 = df_abono_corrente['4º dia'].iloc[0]
-    dia5 = df_abono_corrente['5º dia'].iloc[0]
+    dias = ['1º dia', '2º dia', '3º dia', '4º dia', '5º dia']
+    dias_dict = {}
+    for dia in dias:
+        dias_dict[dia] = df_abono_corrente[dia].iloc[0]
+
     sei = df_abono_corrente['SEI'].iloc[0]
 
     st.markdown("### Cadastro ou alteração de abono")
+
+    n_abonos = col1.slider('Selecione quantos abonos quer preencher, incluindo os já cadastrados',
+                         min_value = 0,
+                         max_value =5,
+                         step =1,
+                         value = 0)
+
+if n_abonos > 0:
 
     # Preenche formulário
     with st.form("Alterar Abono"):
 
         col1, col2, col3, col4, col5 = st.columns(5)
-        
-        dia1 = col1.date_input('1º dia', format = 'DD/MM/YYYY', value = dia1)
-        dia2 = col2.date_input('2º dia', format = 'DD/MM/YYYY', value = dia2)
-        dia3 = col3.date_input('3º dia', format = 'DD/MM/YYYY', value = dia3)
-        dia4 = col4.date_input('4º dia', format = 'DD/MM/YYYY', value = dia4)
-        dia5 = col5.date_input('5º dia', format = 'DD/MM/YYYY', value = dia5)
+        columns = [col1, col2, col3, col4, col5]
+       
+        for i in range(n_abonos):
+            dia = dias_dict[dias[i]]
+            if not pd.isna(dia):
+                nova_data = columns[i].date_input(dias[i], format='DD/MM/YYYY', value=dia)
+            else:
+                nova_data = columns[i].date_input(dias[i], format='DD/MM/YYYY')
 
-        # dia1 = col1.date_input('1º dia', format = 'DD/MM/YYYY', value = dia1).strftime('%d/%m/%Y')
-        # dia2 = col2.date_input('2º dia', format = 'DD/MM/YYYY', value = dia2).strftime('%d/%m/%Y')
-        # dia3 = col3.date_input('3º dia', format = 'DD/MM/YYYY', value = dia3).strftime('%d/%m/%Y')
-        # dia4 = col4.date_input('4º dia', format = 'DD/MM/YYYY', value = dia4).strftime('%d/%m/%Y')
-        # dia5 = col5.date_input('5º dia', format = 'DD/MM/YYYY', value = dia5).strftime('%d/%m/%Y')
+            dias_dict[dias[i]] = nova_data
+
+
+            # if dias_dict[dias[i]]:
+            #     dias_dict[dias[i]] = col1.date_input(dias[i], format = 'DD/MM/YYYY', value = dias_dict[dias[i]])
+            # else:
+            #     dias_dict[dias[i]] = col1.date_input(dias[i], format = 'DD/MM/YYYY', value = hoje)
+
         sei = st.text_input('Processo SEI', value=sei)
+
         novo_abono = pd.DataFrame([         
             {   "Timestamp": datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
                 "Matrícula SSP": matricula,
                 "Ano do gozo": ano_ref,
-                "1º dia": pd.to_datetime(dia1).date() if dia1 else None, 
-                "2º dia": pd.to_datetime(dia2).date() if dia2 else None,
-                "3º dia": pd.to_datetime(dia3).date() if dia3 else None,
-                "4º dia": pd.to_datetime(dia4).date() if dia4 else None,
-                "5º dia": pd.to_datetime(dia5).date() if dia5 else None,
+                "1º dia": pd.to_datetime(dias_dict["1º dia"]).date() if dias_dict["1º dia"] else None, 
+                "2º dia": pd.to_datetime(dias_dict["2º dia"]).date() if dias_dict["3º dia"] else None,
+                "3º dia": pd.to_datetime(dias_dict["3º dia"]).date() if dias_dict["4º dia"] else None,
+                "4º dia": pd.to_datetime(dias_dict["4º dia"]).date() if dias_dict["5º dia"] else None,
+                "5º dia": pd.to_datetime(dias_dict["5º dia"]).date() if dias_dict["5º dia"] else None,
                 "SEI": sei}
                 ]
         )

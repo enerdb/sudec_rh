@@ -83,6 +83,8 @@ def import_data():
     dados['ferias']['3º Período - início'] = pd.to_datetime(dados['ferias']['3º Período - início'], dayfirst=True).dt.date
     dados['ferias']['3º Período - último dia'] = pd.to_datetime(dados['ferias']['3º Período - último dia'], dayfirst=True).dt.date
 
+    dados['servidores']['Nome Completo']            = dados['servidores']['Nome Completo'].str.upper()
+    dados['servidores']["Nome de Guerra (preferencial se civil)"]            = dados['servidores']["Nome de Guerra (preferencial se civil)"].str.upper()
     dados['servidores']['Posto ou Graduação']       = dados['servidores']['Posto ou Graduação'].fillna('')
     dados['servidores']['Quadro QOBM/QBMG']         = dados['servidores']['Quadro QOBM/QBMG'].fillna('')
     dados['servidores']['Efetividade']              = dados['servidores']['Efetividade'].fillna('')
