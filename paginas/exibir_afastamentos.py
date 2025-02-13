@@ -4,11 +4,6 @@ from datetime import datetime
 import numpy as np
 
 
-st.set_page_config(
-    page_title="Afastamentos",
-    page_icon='🏖',
-    layout = 'wide'
-)
 
 #####################
 # CARREGANDO DADOS
@@ -72,12 +67,12 @@ if st.sidebar.button("Exibir dados"):
         #df_servidores_afastados = df_servidores[df_servidores['Matrícula na SSP'].isin(lista_servidores_afastados)]
         df_servidores_disponiveis = df_servidores[~df_servidores['Matrícula na SSP'].isin(lista_servidores_afastados)]
 
-        columns_afast_display = ['Matrícula na SSP', 'Nome Completo', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Cidade', 'Primeiro Dia', 'Último Dia']
-        columns_disponivel_display = ['Matrícula na SSP', 'Nome Completo', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Cidade']
+        columns_afast_display = ['Matrícula na SSP', 'Nome Completo', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Cidade', 'Primeiro Dia', 'Último Dia', 'Antiguidade']
+        columns_disponivel_display = ['Matrícula na SSP', 'Nome Completo', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Cidade', 'Antiguidade']
 
   
         st.markdown(f'#### Servidores afastados no período')
-        df_toprint = df_servidores_afastados[columns_afast_display].reset_index(drop=True)
+        df_toprint = df_servidores_afastados[columns_afast_display].sort_values('Antiguidade').reset_index(drop=True)
         df_toprint.index +=1
         st.dataframe(
             df_toprint,
@@ -89,7 +84,7 @@ if st.sidebar.button("Exibir dados"):
         )
 
         st.markdown(f'#### Servidores disponíves no período')
-        df_toprint = df_servidores_disponiveis[columns_disponivel_display].reset_index(drop=True)
+        df_toprint = df_servidores_disponiveis[columns_disponivel_display].sort_values('Antiguidade').reset_index(drop=True)
         df_toprint.index +=1
 
         st.dataframe(

@@ -3,7 +3,7 @@ import pandas as pd
 #url_abono = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0ViaRdmnFJh5VMrAuA9kYI_gqvCQkuWNNL3HuKwPMpBR2yDgHKOgduCN4Q1I0MQ1XA9QuTT90-94c/pub?gid=144957376&single=true&output=csv'
 
 def trata_abono_2sys(df):
-    # ['Timestamp','Matrícula SSP', 'Ano do gozo', '1º dia', '2º dia', '3º dia', '4º dia', '5º dia', 'SEI' ]
+    # ['Timestamp','Matrícula SSP', 'Ano do gozo', '1º dia', '2º dia', '3º dia', '4º dia', '5º dia', 'SEI']
 
     df['Timestamp'] = pd.to_datetime(df['Timestamp'], dayfirst=True)
     df['Matrícula SSP'] = df['Matrícula SSP']

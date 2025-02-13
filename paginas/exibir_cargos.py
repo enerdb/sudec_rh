@@ -1,10 +1,6 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="Servidores",
-    page_icon='👮‍♂️',
-    layout = 'wide'
-)
+
 
 #####################
 # CARREGANDO DADOS
@@ -20,7 +16,7 @@ df_cargos = df_cargos.merge(df_gratificacao, on = 'Gratificação')[cargos_colum
 
 
 
-servidores_columns = ['Matrícula na SSP', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Nome Completo']
+servidores_columns = ['Matrícula na SSP', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Nome Completo', 'Antiguidade']
 df_servidores = dados['servidores'][servidores_columns].set_index('Matrícula na SSP')
 
 #####################

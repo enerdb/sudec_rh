@@ -1,10 +1,5 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="Inserir dados",
-    page_icon='✏',
-    layout = 'wide'
-)
 
 st.markdown('## Selecione uma das ações abaixos para abrir um formulário')
 

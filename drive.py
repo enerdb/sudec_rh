@@ -32,6 +32,43 @@ def get_sheet_from_drive():
 
     return client.open(title=nome_planilha, folder_id=id_pasta)
 
+def update_worksheet_from_df(worksheet, df):
+    worksheet.update([df.columns.values.tolist()] + df.values.tolist())
+
+
+def get_data_from_drive(sheet, tab):
+    # tab = nome da aba
+    return pd.DataFrame(sheet.worksheet(tab).get_all_records())
+
+
+
+def drive_update_abono(df):
+    sheet = get_sheet_from_drive()
+    update_worksheet_from_df(sheet.worksheet('abono'), df)
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # def show_worksheet(planilha):
 #     dados = planilha.get_all_records()
@@ -60,19 +97,3 @@ def add_line2worksheet(worksheet, value):
         col=1,
         value=value
     )
-
-def update_worksheet_from_df(worksheet, df):
-    worksheet.update([df.columns.values.tolist()] + df.values.tolist())
-
-
-def get_data_from_drive(sheet, tab):
-    # tab = nome da aba
-    return pd.DataFrame(sheet.worksheet(tab).get_all_records())
-
-def drive_update_abono(df):
-    sheet = get_sheet_from_drive()
-    update_worksheet_from_df(sheet.worksheet('abono'), df)
-
-
-
-    

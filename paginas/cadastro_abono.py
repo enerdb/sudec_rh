@@ -4,13 +4,8 @@ from datetime import datetime, date
 from time import sleep
 from drive import drive_update_abono
 
-from datamodels.abono import trata_abono_2drive, trata_abono_2sys, filter_abono_by_matricula_ano, concat_abonos
+from datahandlers.abono import trata_abono_2drive, trata_abono_2sys, filter_abono_by_matricula_ano, concat_abonos
 
-st.set_page_config(
-    page_title="Inserir dados",
-    page_icon='✏',
-    layout = 'wide'
-)
 
 st.markdown("## Insira os dados do servidor e o ano de referência do abono")
 
@@ -124,8 +119,6 @@ if n_abonos > 0:
         )
 
         novo_abono = trata_abono_2sys(novo_abono)
-        
-       
         submit = st.form_submit_button('Enviar dados')
         
     if submit:

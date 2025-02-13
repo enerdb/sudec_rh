@@ -2,18 +2,8 @@ import streamlit as st
 import pandas as pd
 
 
-st.set_page_config(
-    page_title="Servidores",
-    page_icon='👨‍👦‍👦',
-    layout = 'wide'
-)
-
 #df_data = st.session_state['data']['servidores']
 df_data = st.session_state['data']['serv_total']
-
-
-
-
 
 # Lista Setores
 setores = df_data['Atividade predominante'].unique()
@@ -29,10 +19,9 @@ if not setores_selected:
 #Segmenta DF com base na seleção
 servidores_setor = df_data[df_data['Atividade predominante'].isin(setores_selected)].set_index('Matrícula na SSP')
 
-
 # Exibe seleção filtrada
 st.dataframe(
-    servidores_setor,
+    servidores_setor.sort_values('Antiguidade'),
     column_config = {
         'Matrícula na SSP': st.column_config.NumberColumn(format = '%d')
     }

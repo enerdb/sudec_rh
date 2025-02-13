@@ -1,10 +1,6 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="Pendências",
-    page_icon='⚠',
-    layout = 'wide'
-)
+
 
 #####################
 # CARREGANDO DADOS
@@ -37,15 +33,22 @@ columns_cargos = ['Cargo', 'Setor', 'Gratificação']
 # EXIBIÇÃO
 #####################
 
-st.markdown('### Os servidores abaixo não estão nomeados em cargos válidos ou alguém foi nomeado em seus cargos')
+if df_pend.shape[0] == 0:
+    st.markdown('### Não há pendências no cadastro dos cargos')
 
-col1, col2 = st.columns([3,2])
+    st.markdown('#### Cargos Previstos')
+    st.dataframe(df_cargos[columns_cargos])
 
-col1.markdown('#### Servidores')
-col1.dataframe(df_pend[columns_pend],
-    column_config = {
-        'Matrícula SSP': st.column_config.NumberColumn(format = '%d')
-    }) 
+else:
+    st.markdown('### Os servidores abaixo não estão nomeados em cargos válidos ou alguém foi nomeado em seus cargos')
 
-col2.markdown('#### Cargos Previstos')
-col2.dataframe(df_cargos[columns_cargos])
+    col1, col2 = st.columns([3,2])
+
+    col1.markdown('#### Servidores')
+    col1.dataframe(df_pend[columns_pend],
+        column_config = {
+            'Matrícula SSP': st.column_config.NumberColumn(format = '%d')
+        }) 
+
+    col2.markdown('#### Cargos Previstos')
+    col2.dataframe(df_cargos[columns_cargos])
