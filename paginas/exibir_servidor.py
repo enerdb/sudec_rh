@@ -15,7 +15,7 @@ exercicios = df_ferias['Exercício'].unique()
 
 st.markdown('##### Selecione um servidor')
 
-df_servidores['nome_busca'] = df_servidores["Posto ou Graduação"] + ' ' + df_servidores["Nome de Guerra (preferencial se civil)"] + ' - ' + df_servidores["Nome Completo"] + ' - ' #+  df_servidores["Matrícula na SSP"]
+df_servidores['nome_busca'] = df_servidores["Posto ou Graduação"] + ' ' + df_servidores["Nome de Guerra (preferencial se civil)"] + ' - ' + df_servidores["Nome Completo"]
 options = df_servidores['nome_busca'].to_list()
 options.insert(0,'')
 
