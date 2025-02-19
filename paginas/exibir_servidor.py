@@ -1,7 +1,7 @@
 import streamlit as st
 
 
-
+# Carrega dados
 dados = st.session_state['data']
 df_servidores = dados['serv_total'] 
 #df_servidores = dados['servidores'] 
@@ -9,27 +9,39 @@ df_ferias = dados['ferias']
 df_abono = dados['abono']
 df_afastamentos = dados['afastamentos']
 df_cargos = dados['cargos']
-
 exercicios = df_ferias['Exercício'].unique()
 
-matricula = st.number_input('Digite a matrícula do servidor', value=None, format='%.0f')
+# Busca por nome
 
-if st.button("Exibir dados"):
+st.markdown('##### Selecione um servidor')
+
+df_servidores['nome_busca'] = df_servidores["Posto ou Graduação"] + ' ' + df_servidores["Nome de Guerra (preferencial se civil)"] + ' - ' + df_servidores["Nome Completo"] + ' - ' #+  df_servidores["Matrícula na SSP"]
+options = df_servidores['nome_busca'].to_list()
+options.insert(0,'')
+
+nome_busca = st.selectbox('Insira um nome para buscar', options = options)
+if nome_busca == '':
+    matricula = None
+else:
+    matricula = float(df_servidores[df_servidores['nome_busca']==nome_busca]['Matrícula na SSP'].iloc[0])
+
+st.markdown('##### ou digite diretamente a matrícula')
+
+
+# Input de matricula
+matricula = st.number_input('Digite a matrícula do servidor', value=matricula, format='%.0f')
+
+if st.button("Exibir dados") and matricula:
     
     # Backend
     servidor = df_servidores[df_servidores['Matrícula na SSP']==matricula]
     cargo = df_cargos[df_cargos['Ocupante']==matricula]
     
     #ferias_exercicio
-
-
-
     st.markdown(f'### {servidor['Posto ou Graduação'].iloc[0]} {servidor['Quadro QOBM/QBMG'].iloc[0]} {servidor['Nome de Guerra (preferencial se civil)'].iloc[0]}')
     st.markdown(f'**Matrícula:** {matricula:.0f}')
     st.markdown(f'**Nome Completo:** {servidor['Nome Completo'].iloc[0]}')
     
-    st.write(cargo.shape[0])
-
     col1, col2 = st.columns(2)
     col1.markdown('#### Dados funcionais')
     col1.markdown(f'**Cidade de Residência:** {servidor['Cidade'].iloc[0]}')

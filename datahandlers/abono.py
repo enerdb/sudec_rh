@@ -12,7 +12,6 @@ def trata_abono_2sys(df):
     df['3º dia'] = pd.to_datetime(df['3º dia'], dayfirst=True)
     df['4º dia'] = pd.to_datetime(df['4º dia'], dayfirst=True)
     df['5º dia'] = pd.to_datetime(df['5º dia'], dayfirst=True)
-    # df[['1º dia', '2º dia', '3º dia', '4º dia', '5º dia']] = df[['1º dia', '2º dia', '3º dia', '4º dia', '5º dia']].apply(pd.to_datetime)
     return df
 
 def trata_abono_2drive(df):
