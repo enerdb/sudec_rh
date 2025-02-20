@@ -2,7 +2,6 @@ import pandas as pd
 
 #["Matrícula na SSP","Nome Completo","Nome de Guerra (preferencial se civil)","Efetividade","Posto ou Graduação","Quadro QOBM/QBMG","Cidade","Sexo", "Horário de trabalho", "Atividade predominante", "Local de Trabalho"]
 
-
 def trata_servidor_2sys(df):
     postos_dict = {
     'Coronel': 1,

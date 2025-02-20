@@ -18,7 +18,7 @@ def generate_credentials():
             with open("credentials.json", "w") as f:
                 f.write(json.dumps(credentials_dict))
 
-def get_sheet_from_drive():
+def get_sheet_from_drive(planilha):
     generate_credentials()
     scopes = [
         "https://www.googleapis.com/auth/spreadsheets",  # Acesso a planilhas
@@ -28,7 +28,8 @@ def get_sheet_from_drive():
     creds = ServiceAccountCredentials.from_json_keyfile_name(filename='credentials.json', scopes=scopes)
     client = gspread.authorize(creds)
     id_pasta = '16qXeetFnH6PuyIkz-D0gviZxG8orHrNQ'
-    nome_planilha = 'dados_rh'
+    nome_planilha = planilha
+    #nome_planilha = 'dados_rh'
 
     return client.open(title=nome_planilha, folder_id=id_pasta)
 
@@ -40,15 +41,18 @@ def get_data_from_drive(sheet, tab):
     # tab = nome da aba
     return pd.DataFrame(sheet.worksheet(tab).get_all_records())
 
+def get_df_from_drive(sheet, tab):
+    # tab = nome da aba
+    return pd.DataFrame(sheet.worksheet(tab).get_all_records())
 
 
 def drive_update_abono(df):
-    sheet = get_sheet_from_drive()
+    sheet = get_sheet_from_drive('dados_rh')
     update_worksheet_from_df(sheet.worksheet('abono'), df)
 
 
 
-    
+
 
 
 
