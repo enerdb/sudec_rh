@@ -2,25 +2,11 @@ from pydantic import BaseModel, PositiveInt, StrictBool, EmailStr
 from datetime import datetime
 from typing import List, Optional
 
+
 # pip install email-validator
 # Separar classes de banco e classes de cadastro
 # Só as classes de cadastro terão timestamp
 
-postos_dict = {
-    'Coronel': 1,
-    'Tenente Coronel':2,
-    'Major' : 3,
-    'Capitão' : 4,
-    '1º Tenente' : 5, 
-    '2º Tenente' : 6,
-    'Subtenente' : 7,
-    '1º Sargento': 8,
-    '2º Sargento' : 9,
-    '3º Sargento' : 10,
-    'Cabo': 11,
-    'Soldado': 12,
-    'Agente Civil': 13
-}
 
 class Servidor(BaseModel):
     # Dados básicos
@@ -34,10 +20,15 @@ class Servidor(BaseModel):
     quadro: Optional[str] = None
     siape: Optional[PositiveInt] = None
 
-    # Dados sensiveis
+    # Dados funcionais
+    cidade: Optional[str] = None
+    horario_manha: Optional[bool] = None
+    atividade: Optional[str] = None
+    local_trab: Optional[str] = None
+
+    # Dados confidenciais
     cpf: Optional[PositiveInt] = None
     endereco: Optional[str] = None
-    cidade: Optional[str] = None
     cep: Optional[str] = None
     fone1: Optional[str] = None
     fone2: Optional[str] = None
@@ -50,13 +41,10 @@ class Servidor(BaseModel):
     alergias: Optional[str] = None
     outr_cond: Optional[str] = None
 
-    # Dados funcionais
-    horario_manha: Optional[bool] = None
-    atividade: Optional[str] = None
-    local_trab: Optional[str] = None
 
-    #?
-    #nomeado: bool # Precisa?
+
+    # Auxiliares
+    nomeado: Optional[bool] = None
 
 #ID	Nome_full	nome_Cargo	Setor	SIGRH - FUNÇÃO (DEC 46.117)	Gratificação	NC_padronizado	Seq	Ocupante
 class Cargo(BaseModel):

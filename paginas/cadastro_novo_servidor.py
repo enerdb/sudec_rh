@@ -1,29 +1,56 @@
 import streamlit as st
 from datamodels.sudec_rh_classes import Servidor
+import config
+import pandas as pd
 
-
-
+militar = st.checkbox('Militar')
 
 with st.form("Alterar Cadastro de Servidor"):
     
     col1, col2, col3 = st.columns(3)
 
-    matricula = col1.number_input('Digite a matrícula SSP do servidor', step = 1)
-    nome     = st.text_input('Nome completo')
-    nome_guerra = st.text_input('Nome de guerra')
-    militar = st.checkbox('Militar')
+    matricula = col1.number_input('Digite a matrícula SSP do servidor', step = 1, value = None)
+    nome     = col1.text_input('Nome completo')
+    nome_guerra = col1.text_input('Nome de guerra')
     
+    if militar:
+        poston = col2.selectbox('Posto ou graduação', config.LISTA_POSTOS)
+        posto = config.POSTO_NUM[poston]
+        quadro = col2.selectbox('Quadro', config.LISTA_QUADROS) 
+        siape = col2.number_input('Matrícula Siape',step = 1, value = None)
+    else:
+        posto = config.POSTO_NUM['Agente Civil']
+        quadro = None
+        siape = None
+
     submit = st.form_submit_button('Cadastrar servidor')
+
 
 if submit:
     novo_servidor = Servidor(
         matricula = matricula,
         nome = nome,
         nome_guerra = nome_guerra,
-        militar = militar 
+        militar = militar,
+        posto = posto,
+        quadro = quadro,
+        siape = siape
     )
 
-    st.write(novo_servidor)
+    df = pd.DataFrame([novo_servidor.model_dump()])
+
+    st.session_state['data']['pessoas'] = pd.concat([st.session_state['data']['pessoas'], df], ignore_index=True)
+
+    st.write(st.session_state['data']['pessoas'])
+
+# Cria nos DF - provisório
+if st.button("Inicializar lista de pessoas"):
+      
+    st.session_state['data']['pessoas'] = pd.DataFrame()
+    st.write('Inicializado!')
+
+
+
 
 
     

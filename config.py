@@ -10,7 +10,7 @@ URL_GRATIFICACAO = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_
 URL_NOM_INVALID = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_VQ0HgYseWkqwKBHTumQz7AFjLolLqLRVyobeYlqn6eJzKFvuKa_k5BJO3FLikXxuVT9/pub?gid=987765631&single=true&output=csv'
 
 LISTA_EFETIVIDADE = ['Militar na Ativa', 'Militar da Reserva Remunerada', 'Servidor Civil Concursado', 'Servidor Sem Vínculo']
-LISTA_POSTOS = ['Coronel', 'Tenente Coronel', 'Major' , 'Capitão' , '1º Tenente', '2º Tenente', 'Subtenente', '1º Sargento', '2º Sargento', '3º Sargento', 'Cabo', 'Soldado', 'Agente Civil']
+LISTA_POSTOS = ['Coronel', 'Tenente Coronel', 'Major' , 'Capitão' , '1º Tenente', '2º Tenente', 'Subtenente', '1º Sargento', '2º Sargento', '3º Sargento', 'Cabo', 'Soldado']
 
 LISTA_QUADROS = ['QOBM/Comb', 'QOBM/Méd', 'QOBM/CDent', 'QOBM/Compl', 'QOBM/Intd', 'QOBM/Cond', 'QOBM/Mús', 'QOBM/Mnt', 'QOBM/Cpl', 'QBMG-1 (Combatente)', 'QBMG-2 (Condutor)', 'QBMG-3 (Manutenção)', 'QBMG-4 (Músico)', 'RRm (Veterano)']
 
@@ -51,3 +51,51 @@ LISTA_CIDADES = [
     'Varjão (RA XXIII)',
     'Vicente Pires (RA XXX)',
     'Fora do DF']
+
+POSTO_FULL_NAME = {
+    1: 'Coronel',
+    2: 'Tenente Coronel',
+    3: 'Major',
+    4: 'Capitão',
+    5: '1º Tenente', 
+    6: '2º Tenente',
+    7: 'Subtenente',
+    8: '1º Sargento',
+    9: '2º Sargento',
+    10: '3º Sargento',
+    11: 'Cabo',
+    12: 'Soldado',
+    13: 'Agente Civil'
+}
+
+POSTO_SHORT_NAME = {
+    1: 'Cel',
+    2: 'Ten Cel',
+    3: 'Maj',
+    4: 'Cap',
+    5: '1º Ten', 
+    6: '2º Ten',
+    7: 'Subten',
+    8: '1º Sgt',
+    9: '2º Sgt',
+    10: '3º Sgt',
+    11: 'Cb',
+    12: 'Sd',
+    13: 'Ag'
+}
+
+POSTO_NUM = {
+    'Coronel': 1,
+    'Tenente Coronel': 2,
+    'Major': 3,
+    'Capitão': 4,
+    '1º Tenente': 5, 
+    '2º Tenente': 6,
+    'Subtenente': 7,
+    '1º Sargento': 8,
+    '2º Sargento': 9,
+    '3º Sargento': 10,
+    'Cabo': 11,
+    'Soldado': 12,
+    'Agente Civil': 13
+}

@@ -4,8 +4,8 @@ from datahandlers.servidor import filter_servidor_by_matricula
 import config
 
 dados = st.session_state['data']
-#df_servidores = dados['serv_total'] 
-df_servidores = dados['servidores'] 
+#df_servidores = dados['serv_total']
+df_servidores = dados['servidores']
 
 col1, col2, col3 = st.columns(3)
 matricula = col1.number_input('Digite a matrícula SSP do servidor', value=None, step = 1)
