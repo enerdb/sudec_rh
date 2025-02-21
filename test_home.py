@@ -23,7 +23,6 @@ pages = {
         st.Page("paginas/exibir_pendencias.py",     title="Pendências", icon = '⚠'),
     ],
     "Cadastrar ou Alterar": [
-        
         st.Page("paginas/cadastro_novo_servidor.py",title="Novo Servidor"),
         st.Page("paginas/cadastro_alterar_servidor.py",     title="Alterar dados servidor"),
         st.Page("paginas/cadastro_abono.py",        title="Abono anual"),

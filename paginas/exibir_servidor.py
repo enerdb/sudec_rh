@@ -53,10 +53,10 @@ if st.button("Exibir dados") and matricula:
 
 
     if(cargo.shape[0]>0):
-        col2.markdown(f'**Cargo:** {cargo['Cargo'].iloc[0]}')
-        col2.markdown(f'**Setor:** {cargo['Setor'].iloc[0]}')
-        col2.markdown(f'**SIGRH:** {cargo['SIGRH - FUNÇÃO (DEC 46.117)'].iloc[0]:.0f}')
-        col2.markdown(f'**Gratificação:** {cargo['Gratificação'].iloc[0]}')
+        col2.markdown(f'**Cargo:** {cargo["Cargo"].iloc[0]}')
+        col2.markdown(f'**Setor:** {cargo["Setor"].iloc[0]}')
+        col2.markdown(f'**SIGRH:** {cargo["SIGRH - FUNÇÃO (DEC 46.117)"].iloc[0]}')
+        col2.markdown(f'**Gratificação:** {cargo["Gratificação"].iloc[0]}')
     else:
         col2.markdown('**O servidor não está nomeado em um cargo válido**')
 

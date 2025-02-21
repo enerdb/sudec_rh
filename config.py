@@ -99,3 +99,79 @@ POSTO_NUM = {
     'Soldado': 12,
     'Agente Civil': 13
 }
+
+SEXO_FEM = {
+    'Feminino': True,
+    'Masculino': False
+}
+
+SEXO = {
+    True: 'Feminino',
+    False: 'Masculino'
+}
+
+HORARIO_MANHA = {
+    'Manhã': True,
+    'Tarde': False
+}
+
+HORARIO = {
+    True: 'Manhã',
+    False: 'Tarde'
+}
+
+LISTA_TIPO_SANGUINEO = [
+    'A+',    'A-',    'B+',    'B-',    'AB+',    'AB-',    'O+',    'O-'
+    ]
+
+
+FATOR_RH = {}
+
+LISTA_ATIVIDADES = [
+    'Subsecretário', 
+    'Comunicação Social e Secretaria', 
+    'DIGED',
+    'DIGER',
+    'DIPEG',
+    'GEPLE',
+    'Bem Bolado',
+    'Logística',
+    'Gestor de Frota',
+    'Vistoria - Administrativo',
+    'Vistoria - Plantão',
+    'Análise Técnica',
+    'Capacitação - Administrativo',
+    'Instrução Drones',
+    'Instrução Defesa Civil',
+    'GEPC I',
+    'GEPC II',
+    'GEPC III',
+    'GEPC IV',
+    'NURPDEC I (2º, 7º, 8º E 25º GBM)',
+    'NURPDEC II (6º, 18º, 21º, e 36ºGBM)',
+    'NURPDEC III (3º, 11º, 13º E 45ºGBM)',
+    'NURPEDC IV (9º, 17º, 22º E 34ºGBM)',
+    'Odonto'
+]
+
+LISTA_LOCAL_TRAB = [
+    'SUDEC - SEDE',
+    '2º GBM',
+    '3º GBM',
+    '6º GBM',
+    '7º GBM',
+    '8º GBM',
+    '9º GBM',
+    '11º GBM',
+    '13º GBM',
+    '17º GBM',
+    '18º GBM',
+    '21º GBM',
+    '22º GBM',
+    '25º GBM',
+    '34º GBM',
+    '36º GBM',
+    '45º GBM',
+    'Serviço Odonto',
+    'Serviço Externo'
+]

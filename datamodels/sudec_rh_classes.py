@@ -22,7 +22,7 @@ class Servidor(BaseModel):
 
     # Dados funcionais
     cidade: Optional[str] = None
-    horario_manha: Optional[bool] = None
+    horario: Optional[str] = None
     atividade: Optional[str] = None
     local_trab: Optional[str] = None
 
@@ -32,11 +32,10 @@ class Servidor(BaseModel):
     cep: Optional[str] = None
     fone1: Optional[str] = None
     fone2: Optional[str] = None
-    emaili: Optional[EmailStr] = None
-    emailp: Optional[EmailStr] = None
-    sexo_fem: Optional[bool] = None
+    emaili: Optional[str] = None
+    emailp: Optional[str] = None
+    sexo: Optional[str] = None
     tipo_sang: Optional[str] = None
-    fator_rh: Optional[bool] = None
     emergenc_cont: Optional[str] = None
     alergias: Optional[str] = None
     outr_cond: Optional[str] = None
