@@ -1,8 +1,10 @@
 from pydantic import BaseModel, PositiveInt, StrictBool, EmailStr
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 # pip install email-validator
+# Separar classes de banco e classes de cadastro
+# Só as classes de cadastro terão timestamp
 
 postos_dict = {
     'Coronel': 1,
@@ -21,32 +23,40 @@ postos_dict = {
 }
 
 class Servidor(BaseModel):
-    timestamp: datetime # pensar em como usar isso. acho que não faz sentido se eu manter 2 listas, uma ativa e uma histórica
+    # Dados básicos
     matricula: PositiveInt # Chave Primaria
     nome: str
     nome_guerra: str
-    cpf: PositiveInt
-    militar: StrictBool 
-    posto: PositiveInt
-    quadro: str
-    siape: PositiveInt
-    endereco: str
-    cidade: str
-    cep: str
-    fone1: str
-    fone2: str
-    emaili: EmailStr
-    emailp: EmailStr
-    sexo_fem: bool
-    tipo_sang: str
-    rh: bool
-    emergenc_cont: str
-    alergias: str
-    outr_cond: str
-    horario_manha: bool
-    atividade: str
-    local_trab: str
-    nomeado: bool
+    militar: StrictBool
+
+    # Dados militar
+    posto: Optional[PositiveInt] = None
+    quadro: Optional[str] = None
+    siape: Optional[PositiveInt] = None
+
+    # Dados sensiveis
+    cpf: Optional[PositiveInt] = None
+    endereco: Optional[str] = None
+    cidade: Optional[str] = None
+    cep: Optional[str] = None
+    fone1: Optional[str] = None
+    fone2: Optional[str] = None
+    emaili: Optional[EmailStr] = None
+    emailp: Optional[EmailStr] = None
+    sexo_fem: Optional[bool] = None
+    tipo_sang: Optional[str] = None
+    fator_rh: Optional[bool] = None
+    emergenc_cont: Optional[str] = None
+    alergias: Optional[str] = None
+    outr_cond: Optional[str] = None
+
+    # Dados funcionais
+    horario_manha: Optional[bool] = None
+    atividade: Optional[str] = None
+    local_trab: Optional[str] = None
+
+    #?
+    #nomeado: bool # Precisa?
 
 #ID	Nome_full	nome_Cargo	Setor	SIGRH - FUNÇÃO (DEC 46.117)	Gratificação	NC_padronizado	Seq	Ocupante
 class Cargo(BaseModel):
