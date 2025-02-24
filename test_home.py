@@ -29,7 +29,8 @@ pages = {
         st.Page("paginas/cadastros_google.py",      title="Outros cadastros"),
     ],
     "Adm:" :[
-        st.Page("paginas/adm_tabelas.py", title = "Debug Tabelas")
+        st.Page("paginas/adm_tabelas.py", title = "Debug Tabelas"),
+        st.Page("paginas/adm_import_servidores.py", title="Import Servidores")
     ]
 }
 

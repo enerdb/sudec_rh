@@ -24,10 +24,7 @@ def append_dias_afast(lista, dia1, diau, motivo, matricula):
             lista.append({'Matrícula': matricula, 'Dia': single_date, 'Motivo': motivo})
 
 
-# Importação e tratamento de dados do google sheets
-
-
-
+## Importação e tratamento de dados do google sheets
 def import_data():
     
     dados = {}

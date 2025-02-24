@@ -47,6 +47,20 @@ def prepara_lista_select(lista, dado_old):
         lista.insert(0, dado_old)
     return lista
 
+def empty2none(dado):
+    if not dado:
+        return None
+    elif dado == '':
+        return None
+    else:
+        return dado
+
+def none2empty(dado):
+    if not dado:
+        return ''
+    else:
+        return dado
+
 ##################
 #  Carrega dados
 df_pessoas = st.session_state['data']['pessoas']
@@ -67,110 +81,74 @@ if matricula:
     if servidor.shape[0]==0:
         st.error('Matrícula não encontrada')
     else:
-        nome = servidor['nome']
-        nome_guerra = servidor["nome_guerra"]
-        efetividade = servidor["militar"]
-        posto = servidor["posto"]
-        quadro = servidor["quadro"]
-        cidade = servidor["cidade"]
-        sexo_fem = servidor['sexo_fem']
-        siape = servidor['siape']
-        horario_manha = servidor['horario_manha']
-        atividade = servidor['atividade']
-        local_trab = servidor['local_trab']
-        cpf = servidor['cpf']
-        endereco = servidor['endereco']
-        cep = servidor['cep']
-        fone1 = servidor['fone1']
-        fone2 = servidor['fone2']
-        emaili = servidor['emaili']
-        emailp = servidor['emailp']
-        tipo_sang = servidor['tipo_sang']
-        emergenc_cont = servidor['emergenc_cont']
-        alergias = servidor['alergias']
-        outr_cond = servidor['outr_cond']
+        regulares = ['nome', 'nome_guerra', 'militar', 'posto', 'quadro', 'cidade', 'sexo', 'siape', 'horario', 'atividade', 'local_trab'] 
+        confidenciais = ['cpf', 'endereco', 'cep', 'fone1', 'fone2', 'emaili', 'emailp', 'tipo_sang', 'emergenc_cont', 'alergias', 'outr_cond']
+        allvars  = regulares + confidenciais
+        
+        temp = {}
+        for var in allvars:
+            temp[var] = servidor[var]
     
         with st.form("Alterar Cadastro de Servidor"):
         
-            nome     = st.text_input('Nome completo', value=nome)
-            nome_guerra = st.text_input('Nome de guerra', value=nome_guerra)
-            militar = st.checkbox('Militar', value = servidor['militar'])
-            poston = st.selectbox('Posto ou graduação', prepara_lista_select(config.LISTA_POSTOS,posto))
-            posto = config.POSTO_NUM[poston]
-            quadro = st.selectbox('Quadro', prepara_lista_select(config.LISTA_QUADROS,quadro))     
-            cidade = st.selectbox('Cidade', prepara_lista_select(config.LISTA_CIDADES,cidade))
-            if sexo_fem:
-                sexo = st.selectbox('Sexo', prepara_lista_select(config.SEXO_FEM.keys(),config.SEXO[sexo_fem]))
-            else:
-                sexo = st.selectbox('Sexo', prepara_lista_select(config.SEXO_FEM.keys(),None))
-            if sexo:
-                sexo_fem = config.SEXO_FEM[sexo]                                              
-            else:
-                sexo_fem = None                                              
-            siape = st.number_input('Siape', value=siape)
-            if horario_manha:
-                horario = st.selectbox('Horário de trabalho', prepara_lista_select(config.HORARIO_MANHA.keys(), config.HORARIO[horario_manha]))
-            else:
-                horario = st.selectbox('Horário de trabalho', prepara_lista_select(config.HORARIO_MANHA.keys(), None))
-            if horario:
-                horario_manha = config.HORARIO_MANHA[horario]
-            else:
-                horario_manha = None
-            
-            atividade = st.selectbox('Atividade Predominante', prepara_lista_select(config.LISTA_ATIVIDADES, atividade))
-            local_trab = st.selectbox('Local de Trabalho', prepara_lista_select(config.LISTA_LOCAL_TRAB, local_trab))
+            temp['nome']         = st.text_input('Nome completo', value=temp['nome'])
+            temp['nome_guerra']  = st.text_input('Nome de guerra', value=temp['nome_guerra'])
+            temp['militar']      = st.checkbox('Militar', value = temp['militar'])
+            postof               = st.selectbox('Posto ou graduação', prepara_lista_select(list(config.POSTO_NUM.keys()),config.POSTO_FULL_NAME[temp['posto']]))
+            temp['posto']        = config.POSTO_NUM[postof]
+            temp['quadro']       = st.selectbox('Quadro', prepara_lista_select(config.LISTA_QUADROS,temp['quadro']))
+            temp['cidade']       = st.selectbox('Cidade', prepara_lista_select(config.LISTA_CIDADES,none2empty(temp['cidade'] )))
+            temp['sexo']         = st.selectbox('Sexo', prepara_lista_select(config.LISTA_SEXO, none2empty(temp['sexo'])))
+            temp['horario']      = st.selectbox('Horário de trabalho', prepara_lista_select(config.LISTA_HORARIOS, none2empty(temp['horario'])))
+            temp['siape']        = st.number_input('Siape', value=temp['siape'])           
+            temp['atividade']    = st.selectbox('Atividade Predominante', prepara_lista_select(config.LISTA_ATIVIDADES, none2empty(temp['atividade'])))
+            temp['local_trab']   = st.selectbox('Local de Trabalho', prepara_lista_select(config.LISTA_LOCAL_TRAB, none2empty(temp['local_trab'])))
 
             # Pensar em uma forma de manter os dados caso queira alterar alguns.
             if alterar_confidenciais:
-                cpf = st.number_input('CPF - apenas números',step = 1, value = None)
-                endereco = st.text_input('Endereço')
-                cep = st.text_input('CEP')
-                fone1 = st.text_input('Telefone 1')
-                fone2 = st.text_input('Telefone 2')
-                emaili = st.text_input('e-mail institucional')
-                emailp = st.text_input('e-mail particular')
-                tipo_sang = st.selectbox('Tipo sanguíneo', prepara_lista_select(config.LISTA_TIPO_SANGUINEO, tipo_sang))
+                                
+                temp['cpf']             = st.number_input('CPF - apenas números',step = 1, value = None)
+                temp['endereco']        = st.text_input('Endereço')
+                temp['cep']             = st.text_input('CEP')
+                temp['fone1']           = st.text_input('Telefone 1')
+                temp['fone2']           = st.text_input('Telefone 2')
+                temp['emaili']          = st.text_input('e-mail institucional')
+                temp['emailp']          = st.text_input('e-mail particular')
+                temp['tipo_sang']       = st.selectbox('Tipo sanguíneo', prepara_lista_select(config.LISTA_TIPO_SANGUINEO, none2empty(temp['tipo_sang'])))
+                temp['emergenc_cont']   = st.text_input('Contato de emergência')
+                temp['alergias']        = st.text_input('Alergias')
+                temp['outr_cond']       = st.text_input('Outra condição de saúde a considerar')
 
-                #passar sexo e para lista ao invés de dict
-                # fazer a mesma coisa com turno de trabalho
-                if sexo_fem:
-                    sexo = st.selectbox('Sexo', prepara_lista_select(config.SEXO_FEM.keys(),config.SEXO[sexo_fem]))
-                else:
-                    sexo = st.selectbox('Sexo', prepara_lista_select(config.SEXO_FEM.keys(),None))
-                if sexo:
-                    sexo_fem = config.SEXO_FEM[sexo]                                              
-                else:
-                    sexo_fem = None              
 
-                emergenc_cont = st.text_input('Contato de emergência')
-                alergias = st.text_input('Alergias')
-                outr_cond = st.text_input('Outra condição de saúde a considerar')
 
             submit = st.form_submit_button('Enviar dados')
 
         if submit:
+
             novo_servidor = Servidor(
                 matricula = matricula,
-                nome = nome,
-                nome_guerra = nome_guerra,
-                militar = militar,
-                posto = posto,
-                quadro = quadro,
-                siape = siape,
-                horario_manha = horario_manha,
-                atividade = atividade,
-                local_trab = local_trab,
-                cpf = cpf,
-                endereco = endereco,
-                cep = cep,
-                fone1 = fone1,
-                fone2 = fone2,
-                emaili = emaili,
-                emailp = emailp,
-                tipo_sang = tipo_sang,
-                emergenc_cont = emergenc_cont,
-                alergias = alergias,
-                outr_cond = outr_cond
+                nome = temp['nome'],
+                nome_guerra = temp['nome_guerra'],
+                militar = temp['militar'],
+                posto =  empty2none(temp['posto']),
+                quadro =  empty2none(temp['quadro']),
+                cidade =  empty2none(temp['cidade']),
+                sexo =  empty2none(temp['sexo']),
+                siape = temp['siape'],
+                horario =  empty2none(temp['horario']),
+                atividade =  empty2none(temp['atividade']),
+                local_trab =  empty2none(temp['local_trab']),
+                cpf = temp['cpf'],
+                endereco =  empty2none(temp['endereco']),
+                cep =  empty2none(temp['cep']),
+                fone1 =  empty2none(temp['fone1']),
+                fone2 =  empty2none(temp['fone2']),
+                emaili =  empty2none(temp['emaili']),
+                emailp =  empty2none(temp['emailp']),
+                tipo_sang =  empty2none(temp['tipo_sang']),
+                emergenc_cont =  empty2none(temp['emergenc_cont']),
+                alergias =  empty2none(temp['alergias']),
+                outr_cond =  empty2none(temp['outr_cond'])
             )
             st.write(novo_servidor.model_dump())
 

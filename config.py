@@ -10,11 +10,11 @@ URL_GRATIFICACAO = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_
 URL_NOM_INVALID = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_VQ0HgYseWkqwKBHTumQz7AFjLolLqLRVyobeYlqn6eJzKFvuKa_k5BJO3FLikXxuVT9/pub?gid=987765631&single=true&output=csv'
 
 LISTA_EFETIVIDADE = ['Militar na Ativa', 'Militar da Reserva Remunerada', 'Servidor Civil Concursado', 'Servidor Sem Vínculo']
-LISTA_POSTOS = ['Coronel', 'Tenente Coronel', 'Major' , 'Capitão' , '1º Tenente', '2º Tenente', 'Subtenente', '1º Sargento', '2º Sargento', '3º Sargento', 'Cabo', 'Soldado']
+#LISTA_POSTOS = ['Coronel', 'Tenente Coronel', 'Major' , 'Capitão' , '1º Tenente', '2º Tenente', 'Subtenente', '1º Sargento', '2º Sargento', '3º Sargento', 'Cabo', 'Soldado']
 
 LISTA_QUADROS = ['QOBM/Comb', 'QOBM/Méd', 'QOBM/CDent', 'QOBM/Compl', 'QOBM/Intd', 'QOBM/Cond', 'QOBM/Mús', 'QOBM/Mnt', 'QOBM/Cpl', 'QBMG-1 (Combatente)', 'QBMG-2 (Condutor)', 'QBMG-3 (Manutenção)', 'QBMG-4 (Músico)', 'RRm (Veterano)']
 
-LISTA_CIDADES = [
+LISTA_CIDADES = ['',
     'Água Quente (RA XXXV)',
     'Arapoanga (RA XXXIV)',
     'Águas Claras (RA XX)',
@@ -97,37 +97,21 @@ POSTO_NUM = {
     '3º Sargento': 10,
     'Cabo': 11,
     'Soldado': 12,
-    'Agente Civil': 13
+    'Agente Civil': 13,
+    '' : 99,
 }
 
-SEXO_FEM = {
-    'Feminino': True,
-    'Masculino': False
-}
 
-SEXO = {
-    True: 'Feminino',
-    False: 'Masculino'
-}
-
-HORARIO_MANHA = {
-    'Manhã': True,
-    'Tarde': False
-}
-
-HORARIO = {
-    True: 'Manhã',
-    False: 'Tarde'
-}
-
-LISTA_TIPO_SANGUINEO = [
-    'A+',    'A-',    'B+',    'B-',    'AB+',    'AB-',    'O+',    'O-'
-    ]
+LISTA_SEXO = ['', 'Feminino', 'Masculino']
 
 
-FATOR_RH = {}
+LISTA_HORARIOS = ['', 'Manhã', 'Tarde']
 
-LISTA_ATIVIDADES = [
+LISTA_TIPO_SANGUINEO = ['',    'A+',    'A-',    'B+',    'B-',    'AB+',    'AB-',    'O+',    'O-'    ]
+
+
+
+LISTA_ATIVIDADES = ['',
     'Subsecretário', 
     'Comunicação Social e Secretaria', 
     'DIGED',
@@ -154,7 +138,7 @@ LISTA_ATIVIDADES = [
     'Odonto'
 ]
 
-LISTA_LOCAL_TRAB = [
+LISTA_LOCAL_TRAB = ['',
     'SUDEC - SEDE',
     '2º GBM',
     '3º GBM',
