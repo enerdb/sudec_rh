@@ -12,6 +12,7 @@ import config
 from datamodels.sudec_rh_classes import Servidor
 
 import pandas as pd
+from drive import drive_update_servidor
 
 ##################
 #  Helper functions
@@ -53,17 +54,27 @@ def empty2none(dado):
     elif dado == '':
         return None
     else:
-        return dado
+        return str(dado)
+    
+def empty2noneint(dado):
+    if not dado:
+        return None
+    elif dado == '':
+        return None
+    else:
+        return int(dado)
 
 def none2empty(dado):
     if not dado:
         return ''
     else:
         return dado
+    
+
 
 ##################
 #  Carrega dados
-df_pessoas = st.session_state['data']['pessoas']
+df_pessoas = st.session_state['data']['serv_total']
 
 
 #  Seleciona servidor para alterar
@@ -71,11 +82,12 @@ matricula = seleciona_servidor_input(df_pessoas)
 
 # Flag para alterar dados confidenciais
 alterar_confidenciais = st.checkbox("Incluir ou alterar dados confidenciais")
-st.write("Para proteção dos usuários, os dados confidenciais cadastrados anteriormente não serão exibidos nesta tela")
+st.markdown("Para proteção dos usuários, os dados confidenciais cadastrados anteriormente não serão exibidos nesta tela")
 
 # Formulário
 if matricula:
 
+    index_servidor = df_pessoas[df_pessoas["matricula"]==matricula].index
     servidor = df_pessoas[df_pessoas["matricula"]==matricula].iloc[0]
     
     if servidor.shape[0]==0:
@@ -89,18 +101,29 @@ if matricula:
         for var in allvars:
             temp[var] = servidor[var]
     
+        temp['militar']      = st.checkbox('Militar', value = temp['militar'])
+
         with st.form("Alterar Cadastro de Servidor"):
         
             temp['nome']         = st.text_input('Nome completo', value=temp['nome'])
             temp['nome_guerra']  = st.text_input('Nome de guerra', value=temp['nome_guerra'])
-            temp['militar']      = st.checkbox('Militar', value = temp['militar'])
-            postof               = st.selectbox('Posto ou graduação', prepara_lista_select(list(config.POSTO_NUM.keys()),config.POSTO_FULL_NAME[temp['posto']]))
-            temp['posto']        = config.POSTO_NUM[postof]
-            temp['quadro']       = st.selectbox('Quadro', prepara_lista_select(config.LISTA_QUADROS,temp['quadro']))
+            
+            if temp['militar']:
+                postof               = st.selectbox('Posto ou graduação', prepara_lista_select(list(config.POSTO_NUM.keys()),config.POSTO_FULL_NAME[temp['posto']]))
+                temp['posto']        = config.POSTO_NUM[postof]
+                temp['quadro']       = st.selectbox('Quadro', prepara_lista_select(config.LISTA_QUADROS,temp['quadro']))
+                if not temp['siape']:
+                    temp['siape']= 99
+                temp['siape']= st.number_input('Siape', value=temp['siape'])
+            else:
+                temp['posto']        = config.POSTO_NUM['Agente Civil']
+                temp['quadro']       = None
+                temp['siape']        = None
+            
             temp['cidade']       = st.selectbox('Cidade', prepara_lista_select(config.LISTA_CIDADES,none2empty(temp['cidade'] )))
             temp['sexo']         = st.selectbox('Sexo', prepara_lista_select(config.LISTA_SEXO, none2empty(temp['sexo'])))
             temp['horario']      = st.selectbox('Horário de trabalho', prepara_lista_select(config.LISTA_HORARIOS, none2empty(temp['horario'])))
-            temp['siape']        = st.number_input('Siape', value=temp['siape'])           
+                       
             temp['atividade']    = st.selectbox('Atividade Predominante', prepara_lista_select(config.LISTA_ATIVIDADES, none2empty(temp['atividade'])))
             temp['local_trab']   = st.selectbox('Local de Trabalho', prepara_lista_select(config.LISTA_LOCAL_TRAB, none2empty(temp['local_trab'])))
 
@@ -125,10 +148,11 @@ if matricula:
 
         if submit:
 
+
             novo_servidor = Servidor(
                 matricula = matricula,
-                nome = temp['nome'],
-                nome_guerra = temp['nome_guerra'],
+                nome = temp['nome'].upper(),
+                nome_guerra = temp['nome_guerra'].upper(),
                 militar = temp['militar'],
                 posto =  empty2none(temp['posto']),
                 quadro =  empty2none(temp['quadro']),
@@ -138,7 +162,7 @@ if matricula:
                 horario =  empty2none(temp['horario']),
                 atividade =  empty2none(temp['atividade']),
                 local_trab =  empty2none(temp['local_trab']),
-                cpf = temp['cpf'],
+                cpf = empty2noneint(temp['cpf']),
                 endereco =  empty2none(temp['endereco']),
                 cep =  empty2none(temp['cep']),
                 fone1 =  empty2none(temp['fone1']),
@@ -150,23 +174,26 @@ if matricula:
                 alergias =  empty2none(temp['alergias']),
                 outr_cond =  empty2none(temp['outr_cond'])
             )
-            st.write(novo_servidor.model_dump())
 
-            df1 = pd.DataFrame([novo_servidor.model_dump()]) 
+            # Cria um dataframe de 1 linha com os dados do formulário
+            df1 = pd.DataFrame([novo_servidor.model_dump()])
             
-            st.dataframe(df1)
-            
+            # Preenche os NAs do formulário com os dados antigos do servidor
             servidor = pd.DataFrame([servidor.to_dict()])
-            st.dataframe(servidor)
-            #servidor.index = df1.index
-            
-            #st.write(type(servidor))
-
             df1 = df1.fillna(servidor)
 
-            st.dataframe(df1)
-
-            st.success('Novos dados impressos com Sucesso')
-            st.error('O Cadastro no sistema não foi realizado')
+            # Remove o servidor antigo do dataframe
+            st.session_state['data']['serv_total'] = st.session_state['data']['serv_total'].drop(index_servidor)
 
 
+            # Concatena com os novos dados
+            st.session_state['data']['serv_total'] = pd.concat([st.session_state['data']['serv_total'], df1], ignore_index=True)
+            # Atualiza o drive
+            
+            with st.spinner("Alterando dados"):
+                drive_update_servidor(st.session_state['data']['serv_total'])
+            st.success('Dados alterados com Sucesso')
+            
+
+            
+            

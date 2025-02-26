@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import numpy as np
+import config
 
 
 
@@ -58,39 +59,45 @@ if st.sidebar.button("Exibir dados"):
         df_primeiro_dia = df_afast_filtered.groupby(['Matrícula']).min().rename(columns={"Dia": "Primeiro Dia"})
         df_ultimo_dia = df_afast_filtered.groupby(['Matrícula']).max().rename(columns={"Dia": "Último Dia"})
 
-        df_servidores_afastados = df_servidores[df_servidores['Matrícula na SSP'].isin(lista_servidores_afastados)]
+        df_servidores_afastados = df_servidores[df_servidores['matricula'].isin(lista_servidores_afastados)]
       
-        df_servidores_afastados = df_servidores_afastados.join(df_primeiro_dia, on = 'Matrícula na SSP')
-        df_servidores_afastados = df_servidores_afastados.join(df_ultimo_dia, on = 'Matrícula na SSP')
+        df_servidores_afastados = df_servidores_afastados.join(df_primeiro_dia, on = 'matricula')
+        df_servidores_afastados = df_servidores_afastados.join(df_ultimo_dia, on = 'matricula')
 
         
         #df_servidores_afastados = df_servidores[df_servidores['Matrícula na SSP'].isin(lista_servidores_afastados)]
-        df_servidores_disponiveis = df_servidores[~df_servidores['Matrícula na SSP'].isin(lista_servidores_afastados)]
+        df_servidores_disponiveis = df_servidores[~df_servidores['matricula'].isin(lista_servidores_afastados)]
 
-        columns_afast_display = ['Matrícula na SSP', 'Nome Completo', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Cidade', 'Primeiro Dia', 'Último Dia', 'Antiguidade']
-        columns_disponivel_display = ['Matrícula na SSP', 'Nome Completo', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Cidade', 'Antiguidade']
+        columns_afast_display = ['matricula', 'nome', 'nome_guerra', 'militar', 'posto', 'quadro', 'cidade', 'Primeiro Dia', 'Último Dia']
+        columns_disponivel_display = ['matricula', 'nome', 'nome_guerra', 'militar', 'posto', 'quadro', 'cidade']
 
   
         st.markdown(f'#### Servidores afastados no período')
-        df_toprint = df_servidores_afastados[columns_afast_display].sort_values('Antiguidade').reset_index(drop=True)
+        df_toprint = df_servidores_afastados[columns_afast_display].sort_values('posto').reset_index(drop=True)
         df_toprint.index +=1
+        df_toprint['posto'] = df_toprint['posto'].map(config.POSTO_SHORT_NAME)
+
+
         st.dataframe(
             df_toprint,
             column_config = {
-            'Matrícula na SSP': st.column_config.NumberColumn(format = '%d'),
-            'Primeiro Dia': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
-            'Último Dia': st.column_config.DateColumn(format = 'DD/MM/YYYY')
+                'matricula': st.column_config.NumberColumn(format = '%d'),
+                'militar': st.column_config.CheckboxColumn(),
+                'Primeiro Dia': st.column_config.DateColumn(format = 'DD/MM/YYYY'),
+                'Último Dia': st.column_config.DateColumn(format = 'DD/MM/YYYY')
             }
         )
 
         st.markdown(f'#### Servidores disponíves no período')
-        df_toprint = df_servidores_disponiveis[columns_disponivel_display].sort_values('Antiguidade').reset_index(drop=True)
+        df_toprint = df_servidores_disponiveis[columns_disponivel_display].sort_values('posto').reset_index(drop=True)
         df_toprint.index +=1
+        df_toprint['posto'] = df_toprint['posto'].map(config.POSTO_SHORT_NAME)
 
         st.dataframe(
             df_toprint,
             column_config = {
-            'Matrícula na SSP': st.column_config.NumberColumn(format = '%d')
+            'matricula': st.column_config.NumberColumn(format = '%d'),
+            'militar': st.column_config.CheckboxColumn(),
             }
         )
 

@@ -1,4 +1,5 @@
 import streamlit as st
+import config
 
 
 # Carrega dados
@@ -15,7 +16,9 @@ exercicios = df_ferias['Exercício'].unique()
 
 st.markdown('##### Selecione um servidor')
 
-df_servidores['nome_busca'] = df_servidores["Posto ou Graduação"] + ' ' + df_servidores["Nome de Guerra (preferencial se civil)"] + ' - ' + df_servidores["Nome Completo"]
+df_servidores['nome_busca'] = df_servidores["posto"].map(config.POSTO_SHORT_NAME) + ' ' + df_servidores["nome_guerra"] + ' - ' + df_servidores["nome"]
+
+
 options = df_servidores['nome_busca'].to_list()
 options.insert(0,'')
 
@@ -23,7 +26,7 @@ nome_busca = st.selectbox('Insira um nome para buscar', options = options)
 if nome_busca == '':
     matricula = None
 else:
-    matricula = float(df_servidores[df_servidores['nome_busca']==nome_busca]['Matrícula na SSP'].iloc[0])
+    matricula = float(df_servidores[df_servidores['nome_busca']==nome_busca]['matricula'].iloc[0])
 
 st.markdown('##### ou digite diretamente a matrícula')
 
@@ -34,19 +37,19 @@ matricula = st.number_input('Digite a matrícula do servidor', value=matricula, 
 if st.button("Exibir dados") and matricula:
     
     # Backend
-    servidor = df_servidores[df_servidores['Matrícula na SSP']==matricula]
+    servidor = df_servidores[df_servidores['matricula']==matricula]
     cargo = df_cargos[df_cargos['Ocupante']==matricula]
     
     #ferias_exercicio
-    st.markdown(f'### {servidor['Posto ou Graduação'].iloc[0]} {servidor['Quadro QOBM/QBMG'].iloc[0]} {servidor['Nome de Guerra (preferencial se civil)'].iloc[0]}')
+    st.markdown(f'### {config.POSTO_FULL_NAME[servidor['posto'].iloc[0]]} {servidor['quadro'].iloc[0]} {servidor['nome_guerra'].iloc[0]}')
     st.markdown(f'**Matrícula:** {matricula:.0f}')
-    st.markdown(f'**Nome Completo:** {servidor['Nome Completo'].iloc[0]}')
+    st.markdown(f'**Nome Completo:** {servidor['nome'].iloc[0]}')
     
     col1, col2 = st.columns(2)
     col1.markdown('#### Dados funcionais')
-    col1.markdown(f'**Cidade de Residência:** {servidor['Cidade'].iloc[0]}')
-    col1.markdown(f'**Atividade Predominante:** {servidor['Atividade predominante'].iloc[0]}')
-    col1.markdown(f'**Local de Trabalho:** {servidor['Local de Trabalho'].iloc[0]}')
+    col1.markdown(f'**Cidade de Residência:** {servidor['cidade'].iloc[0]}')
+    col1.markdown(f'**Atividade Predominante:** {servidor['atividade'].iloc[0]}')
+    col1.markdown(f'**Local de Trabalho:** {servidor['local_trab'].iloc[0]}')
 
     col2.markdown('#### Informações do cargo em comissão')
     

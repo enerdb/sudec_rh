@@ -1,5 +1,5 @@
 import streamlit as st
-
+import config
 
 
 #####################
@@ -16,8 +16,9 @@ df_cargos = df_cargos.merge(df_gratificacao, on = 'Gratificação')[cargos_colum
 
 
 
+#servidores_columns = ['Matrícula na SSP', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Nome Completo', 'Antiguidade']
 servidores_columns = ['Matrícula na SSP', 'Posto ou Graduação', 'Quadro QOBM/QBMG', 'Nome de Guerra (preferencial se civil)', 'Nome Completo', 'Antiguidade']
-df_servidores = dados['servidores'][servidores_columns].set_index('Matrícula na SSP')
+df_servidores = dados['serv_total'][['matricula'] + config.SERV_COLUNAS_DISPLAY].set_index('matricula')
 
 #####################
 # FILTROS
@@ -58,7 +59,7 @@ df_cargos_filtrado = df_cargos_cargos
 #####################
 # MERGE
 #####################
-df_cargos_ocupados = df_cargos_filtrado.merge(df_servidores, left_on = 'Ocupante', right_on = 'Matrícula na SSP')
+df_cargos_ocupados = df_cargos_filtrado.merge(df_servidores, left_on = 'Ocupante', right_on = 'matricula')
 df_cargo_vagos = df_cargos_filtrado[df_cargos_filtrado['Ocupante'].isna()].drop(columns = ['Ocupante'])
 
 #####################
@@ -71,11 +72,16 @@ df_cargos_ocupados.index +=1
 df_cargo_vagos = df_cargo_vagos.reset_index(drop=True)
 df_cargo_vagos.index +=1
 
+df_display = df_cargos_ocupados
+
+df_display['posto'] = df_display['posto'].map(config.POSTO_SHORT_NAME).fillna('')
+
 st.markdown('### Cargos Ocupados')
 st.dataframe(df_cargos_ocupados,
              column_config = {
                  'SIGRH - FUNÇÃO (DEC 46.117)': st.column_config.NumberColumn(format = '%d'),
-                 'Ocupante': st.column_config.NumberColumn(format = '%d')
+                 'Ocupante': st.column_config.NumberColumn(format = '%d'),
+                 'militar' :st.column_config.CheckboxColumn()
              }
 )
              

@@ -12,7 +12,7 @@ URL_NOM_INVALID = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz_rr0axyr_V
 LISTA_EFETIVIDADE = ['Militar na Ativa', 'Militar da Reserva Remunerada', 'Servidor Civil Concursado', 'Servidor Sem Vínculo']
 #LISTA_POSTOS = ['Coronel', 'Tenente Coronel', 'Major' , 'Capitão' , '1º Tenente', '2º Tenente', 'Subtenente', '1º Sargento', '2º Sargento', '3º Sargento', 'Cabo', 'Soldado']
 
-LISTA_QUADROS = ['QOBM/Comb', 'QOBM/Méd', 'QOBM/CDent', 'QOBM/Compl', 'QOBM/Intd', 'QOBM/Cond', 'QOBM/Mús', 'QOBM/Mnt', 'QOBM/Cpl', 'QBMG-1 (Combatente)', 'QBMG-2 (Condutor)', 'QBMG-3 (Manutenção)', 'QBMG-4 (Músico)', 'RRm (Veterano)']
+LISTA_QUADROS = ['', 'QOBM/Comb', 'QOBM/Méd', 'QOBM/CDent', 'QOBM/Compl', 'QOBM/Intd', 'QOBM/Cond', 'QOBM/Mús', 'QOBM/Mnt', 'QOBM/Cpl', 'QBMG-1 (Combatente)', 'QBMG-2 (Condutor)', 'QBMG-3 (Manutenção)', 'QBMG-4 (Músico)', 'RRm (Veterano)']
 
 LISTA_CIDADES = ['',
     'Água Quente (RA XXXV)',
@@ -65,7 +65,8 @@ POSTO_FULL_NAME = {
     10: '3º Sargento',
     11: 'Cabo',
     12: 'Soldado',
-    13: 'Agente Civil'
+    13: 'Agente Civil',
+    99: ''
 }
 
 POSTO_SHORT_NAME = {
@@ -81,7 +82,8 @@ POSTO_SHORT_NAME = {
     10: '3º Sgt',
     11: 'Cb',
     12: 'Sd',
-    13: 'Ag'
+    13: 'Ag',
+    99: ''
 }
 
 POSTO_NUM = {
@@ -159,3 +161,8 @@ LISTA_LOCAL_TRAB = ['',
     'Serviço Odonto',
     'Serviço Externo'
 ]
+
+SERV_COLUNAS_DISPLAY = [ 'nome', 'nome_guerra', 'militar', 'posto', 'quadro', 'siape', 'cidade', 'horario', 'atividade', 'local_trab'] # matricula está fora porque é index
+
+SERV_COLUNAS_CONFIDENCIAL = ['cpf', 'endereco', 'cep', 'fone1', 'fone2', 'emaili', 'emailp', 'sexo', 'tipo_sanguineo', 'emergenc_cont', 'alergias', 'outr_cond']
+

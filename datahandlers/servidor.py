@@ -20,6 +20,20 @@ def trata_servidor_2sys(df):
 
     return df
 
+def trata_serv_2sys(df):
+
+    df['Quadro QOBM/QBMG']         = df['Quadro QOBM/QBMG'].fillna('')
+    df['Efetividade']              = df['Efetividade'].fillna('')
+    df['Cidade']                   = df['Cidade'].fillna('')
+    df['Sexo']                     = df['Sexo'].fillna('')
+    df['Horário de trabalho']      = df['Horário de trabalho'].fillna('')
+    df['Atividade predominante']   = df['Atividade predominante'].fillna('')
+    df['Local de Trabalho']        = df['Local de Trabalho'].fillna('')
+    df['Matrícula na SSP']         = df['Matrícula na SSP'].astype('int32')
+    df['Antiguidade']              = df['Posto ou Graduação'].map(POSTO_NUM).fillna(14)
+
+    return df
+
 def trata_servidor_2drive(df):
     pass
 
@@ -28,6 +42,10 @@ def filter_servidor_by_matricula(df, matricula):
 
 def concat_servidor(df1, df2):
     pass
+
+def filtra_nomeados(servidores, cargos):
+    lista_nomeados = cargos['Ocupante'].unique().tolist()
+    return servidores[servidores['matricula'].isin(lista_nomeados)]
 
 #def add_servidor(df1, )
 

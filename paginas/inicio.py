@@ -38,13 +38,31 @@ def import_data():
     df = get_df_from_drive(sheet, 'abono')
     dados['abono'] = trata_abono_2sys(df)
 
-    ## carrega servidores
-    df = get_df_from_drive(import_sheet, 'Servidores_nomeados')
-    dados['servidores'] = trata_servidor_2sys(df)
+    ## Carrega servidores modelo novo  
+    df = get_df_from_drive(sheet, 'servidores')
+    dados['serv_total'] = df
 
-    ## carrega histórico de servidores
-    df = get_df_from_drive(import_sheet, 'Servidores_total')
-    dados['historico'] = trata_servidor_2sys(df)
+
+    # ## carrega servidores
+    #df = get_df_from_drive(import_sheet, 'Servidores_nomeados')
+    #dados['servidores'] = trata_servidor_2sys(df)
+
+    # ## carrega histórico de servidores
+    # df = get_df_from_drive(import_sheet, 'Servidores_total')
+    # dados['historico'] = trata_servidor_2sys(df)
+
+    ## gera df de servidores inválidos
+    # matriculas_to_drop = dados['servidores']['Matrícula na SSP']
+    # dados['servidores_inv'] = dados['serv_total'][~dados['serv_total']['Matrícula na SSP'].isin(matriculas_to_drop)]
+
+    # ## carrega nomeações invalidas
+    # dados['nom_invalid'] = get_df_from_drive(import_sheet,'Nom_invalid') # ['Matrícula SSP','Cargo','GRATIFICAÇÃO', 'SETOR', 'Data de nomeação', 'Data_min_exon']
+    # dados['servidores_inv'] = dados['historico'][dados['historico']["Matrícula na SSP"].isin(dados['nom_invalid']['Matrícula SSP'])]
+
+    # ## integra servidores nomeados + historico
+    # dados['serv_total'] = pd.concat([dados['servidores'], dados['servidores_inv']], ignore_index = True)
+    # dados['serv_total'] = dados['serv_total'][~dados['serv_total']['Matrícula na SSP'].duplicated(keep='first')]
+
 
     ## carrega outros afastamentos
 
@@ -70,17 +88,9 @@ def import_data():
     ## carrega gratificações
     dados['gratificacao'] = get_df_from_drive(import_sheet,'Gratificacao') # ["Gratificação", "Salário"]
     
-    ## carrega nomeações invalidas
-    dados['nom_invalid'] = get_df_from_drive(import_sheet,'Nom_invalid') # ['Matrícula SSP','Cargo','GRATIFICAÇÃO', 'SETOR', 'Data de nomeação', 'Data_min_exon']
-    dados['servidores_inv'] = dados['historico'][dados['historico']["Matrícula na SSP"].isin(dados['nom_invalid']['Matrícula SSP'])]
 
-    ## integra servidores nomeados + historico
-    dados['serv_total'] = pd.concat([dados['servidores'], dados['servidores_inv']], ignore_index = True)
-    dados['serv_total'] = dados['serv_total'][~dados['serv_total']['Matrícula na SSP'].duplicated(keep='first')]
     
-    ## gera df de servidores inválidos
-    matriculas_to_drop = dados['servidores']['Matrícula na SSP']
-    dados['servidores_inv'] = dados['serv_total'][~dados['serv_total']['Matrícula na SSP'].isin(matriculas_to_drop)]
+
 
 
     # Gera DF de dias com afastamento

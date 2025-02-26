@@ -1,12 +1,13 @@
 import streamlit as st
 import pandas as pd
+import config
 
 
 #df_data = st.session_state['data']['servidores']
 df_data = st.session_state['data']['serv_total']
 
 # Lista Setores
-setores = df_data['Atividade predominante'].unique()
+setores = df_data['atividade'].unique()
 
 
 # Multiselect
@@ -17,13 +18,18 @@ if not setores_selected:
     setores_selected = setores
 
 #Segmenta DF com base na seleção
-servidores_setor = df_data[df_data['Atividade predominante'].isin(setores_selected)].set_index('Matrícula na SSP')
+servidores_display = df_data[df_data['atividade'].isin(setores_selected)].set_index('matricula').sort_values('posto')
+
+servidores_display['posto'] = servidores_display['posto'].map(config.POSTO_SHORT_NAME).fillna('')
 
 # Exibe seleção filtrada
+
+
 st.dataframe(
-    servidores_setor.sort_values('Antiguidade'),
+    servidores_display[config.SERV_COLUNAS_DISPLAY],
     column_config = {
-        'Matrícula na SSP': st.column_config.NumberColumn(format = '%d')
+        'matricula': st.column_config.NumberColumn(format = '%d'),
+        'militar' :st.column_config.CheckboxColumn()
     }
 )
 

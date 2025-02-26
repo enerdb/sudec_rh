@@ -45,13 +45,16 @@ def get_df_from_drive(sheet, tab):
     # tab = nome da aba
     return pd.DataFrame(sheet.worksheet(tab).get_all_records())
 
-
+#############################################################################
+# Abono
 def drive_update_abono(df):
     sheet = get_sheet_from_drive('dados_rh')
     update_worksheet_from_df(sheet.worksheet('abono'), df)
 
-def drive_update_servidor():
-    pass
+def drive_update_servidor(df):
+    sheet = get_sheet_from_drive('dados_rh')
+    df = df.fillna("")
+    update_worksheet_from_df(sheet.worksheet('servidores'), df)
     
 
 

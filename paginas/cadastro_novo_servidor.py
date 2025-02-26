@@ -2,8 +2,10 @@ import streamlit as st
 from datamodels.sudec_rh_classes import Servidor
 import config
 import pandas as pd
+from drive import drive_update_servidor
 
 militar = st.checkbox('Militar')
+
 
 with st.form("Alterar Cadastro de Servidor"):
     
@@ -14,7 +16,7 @@ with st.form("Alterar Cadastro de Servidor"):
     nome_guerra = col1.text_input('Nome de guerra')
     
     if militar:
-        poston = col2.selectbox('Posto ou graduação', config.LISTA_POSTOS)
+        poston = col2.selectbox('Posto ou graduação', list(config.POSTO_NUM.keys()))
         posto = config.POSTO_NUM[poston]
         quadro = col2.selectbox('Quadro', config.LISTA_QUADROS) 
         siape = col2.number_input('Matrícula Siape',step = 1, value = None)
@@ -39,15 +41,12 @@ if submit:
 
     df = pd.DataFrame([novo_servidor.model_dump()])
 
-    st.session_state['data']['pessoas'] = pd.concat([st.session_state['data']['pessoas'], df], ignore_index=True)
+    st.session_state['data']['serv_total'] = pd.concat([st.session_state['data']['serv_total'], df], ignore_index=True)
 
-    st.write(st.session_state['data']['pessoas'])
+    drive_update_servidor(st.session_state['data']['serv_total'])
+    st.success('Servidor cadastrado com sucesso')
 
-# Cria nos DF - provisório
-if st.button("Inicializar lista de pessoas"):
-      
-    st.session_state['data']['pessoas'] = pd.DataFrame()
-    st.write('Inicializado!')
+
 
 
 

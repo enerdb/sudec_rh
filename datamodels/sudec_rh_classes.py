@@ -42,9 +42,6 @@ class Servidor(BaseModel):
 
 
 
-    # Auxiliares
-    nomeado: Optional[bool] = None
-
 #ID	Nome_full	nome_Cargo	Setor	SIGRH - FUNÇÃO (DEC 46.117)	Gratificação	NC_padronizado	Seq	Ocupante
 class Cargo(BaseModel):
     cargo_id: PositiveInt # Chave Primaria
