@@ -13,14 +13,14 @@ import streamlit as st
 
 pages = {
     "Geral": [
-        st.Page("paginas/inicio.py",                title="Início", icon = '🏠'),
+        st.Page("paginas/inicio.py",                title="Início"),
     ],
     "Visualizar": [
-        st.Page("paginas/exibir_servidores.py",     title="Servidores", icon = '👨‍👦‍👦'),
-        st.Page("paginas/exibir_cargos.py",         title="Cargos", icon = '👮‍♂️'),
-        st.Page("paginas/exibir_servidor.py",       title="Exibir Servidor", icon = '👨'),
-        st.Page("paginas/exibir_afastamentos.py",   title="Exibir Afastamentos", icon = '🏖'),
-        #st.Page("paginas/exibir_pendencias.py",     title="Pendências", icon = '⚠'),
+        st.Page("paginas/exibir_servidores.py",     title="Servidores"),
+        st.Page("paginas/exibir_cargos.py",         title="Cargos"),
+        st.Page("paginas/exibir_servidor.py",       title="Exibir Servidor"),
+        st.Page("paginas/exibir_afastamentos.py",   title="Exibir Afastamentos"),
+        #st.Page("paginas/exibir_pendencias.py",     title="Pendências"),
     ],
     "Cadastrar ou Alterar": [
         st.Page("paginas/cadastro_novo_servidor.py",title="Novo Servidor"),
