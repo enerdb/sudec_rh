@@ -1,6 +1,6 @@
 import streamlit as st
 import config
-
+from st_procs import seleciona_servidor_input
 
 # Carrega dados
 dados = st.session_state['data']
@@ -14,27 +14,30 @@ exercicios = df_ferias['Exercício'].unique()
 
 # Busca por nome
 
-st.markdown('##### Selecione um servidor')
+# st.markdown('##### Selecione um servidor')
 
-df_servidores['nome_busca'] = df_servidores["posto"].map(config.POSTO_SHORT_NAME) + ' ' + df_servidores["nome_guerra"] + ' - ' + df_servidores["nome"]
-
-
-options = df_servidores['nome_busca'].to_list()
-options.insert(0,'')
-
-nome_busca = st.selectbox('Insira um nome para buscar', options = options)
-if nome_busca == '':
-    matricula = None
-else:
-    matricula = float(df_servidores[df_servidores['nome_busca']==nome_busca]['matricula'].iloc[0])
-
-st.markdown('##### ou digite diretamente a matrícula')
+# df_servidores['nome_busca'] = df_servidores["posto"].map(config.POSTO_SHORT_NAME) + ' ' + df_servidores["nome_guerra"] + ' - ' + df_servidores["nome"]
 
 
-# Input de matricula
-matricula = st.number_input('Digite a matrícula do servidor', value=matricula, format='%.0f')
+# options = df_servidores['nome_busca'].to_list()
+# options.insert(0,'')
 
-if st.button("Exibir dados") and matricula:
+# nome_busca = st.selectbox('Insira um nome para buscar', options = options)
+# if nome_busca == '':
+#     matricula = None
+# else:
+#     matricula = float(df_servidores[df_servidores['nome_busca']==nome_busca]['matricula'].iloc[0])
+
+# st.markdown('##### ou digite diretamente a matrícula')
+
+
+# # Input de matricula
+# matricula = st.number_input('Digite a matrícula do servidor', value=matricula, format='%.0f')
+
+matricula = seleciona_servidor_input(df_servidores)
+
+
+if matricula:
     
     # Backend
     servidor = df_servidores[df_servidores['matricula']==matricula]

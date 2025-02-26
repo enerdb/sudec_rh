@@ -3,11 +3,13 @@ import pandas as pd
 from datetime import datetime, date
 from time import sleep
 from drive import drive_update_abono
+from st_procs import seleciona_servidor_input
 
 from datahandlers.abono import trata_abono_2drive, trata_abono_2sys, filter_abono_by_matricula_ano, concat_abonos
 
 
-st.markdown("## Insira os dados do servidor e o ano de referência do abono")
+st.markdown("## Cadastro de abono anual")
+st.markdown("#### Insira os dados do servidor e o ano de referência do abono")
 
 #####################
 # Funções
@@ -30,17 +32,20 @@ df_abono = dados['abono']
 #####################
 
 n_abonos = 0
-col1, col2, col3 = st.columns(3)
+
 
 # Identifica Servidor e ano
 # matricula = col1.number_input('Digite a matrícula SSP do servidor', value=None, format='%.0f')
-matricula = col1.number_input('Digite a matrícula SSP do servidor', value=None, step = 1)
-ano_ref = col1.selectbox('Ano de referência', [2024 + i for i in range(10)])
+# matricula = col1.number_input('Digite a matrícula SSP do servidor', value=None, step = 1)
 
+matricula = seleciona_servidor_input(df_servidores)
+col1, col2, col3 = st.columns(3)
 
 if matricula:
-    servidor = df_servidores[df_servidores['Matrícula na SSP']==matricula]
-    col1.markdown(f'**Nome Completo:** {servidor['Nome Completo'].iloc[0]}')
+    st.markdown('##### Digite o ano de referência do abono')
+    ano_ref = col1.selectbox('Ano de referência', [2024 + i for i in range(10)])
+    servidor = df_servidores[df_servidores['matricula']==matricula]
+    col1.markdown(f'**Nome Completo:** {servidor['nome'].iloc[0]}')
 
 if matricula and ano_ref:
     colunas = ['Ano do gozo', '1º dia', '2º dia', '3º dia', '4º dia', '5º dia', 'SEI']
@@ -72,7 +77,7 @@ if matricula and ano_ref:
 
     sei = df_abono_corrente['SEI'].iloc[0]
 
-    st.markdown("### Cadastro ou alteração de abono")
+    col1.markdown("### Cadastro ou alteração de abono")
 
     n_abonos = col1.slider('Selecione quantos abonos quer preencher, incluindo os já cadastrados',
                          min_value = 0,
