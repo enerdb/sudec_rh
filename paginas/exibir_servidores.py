@@ -17,14 +17,13 @@ setores_selected = st.sidebar.multiselect('Filtrar por Setor de Trabalho', setor
 if not setores_selected:
     setores_selected = setores
 
-#Segmenta DF com base na seleção
+#Segmenta DF com base na seleção e prepara para exibição
 servidores_display = df_data[df_data['atividade'].isin(setores_selected)].set_index('matricula').sort_values('posto')
 
 servidores_display['posto'] = servidores_display['posto'].map(config.POSTO_SHORT_NAME).fillna('')
+servidores_display['siape'] = servidores_display['siape'].apply(lambda x: '' if x==99 else x)
 
 # Exibe seleção filtrada
-
-
 st.dataframe(
     servidores_display[config.SERV_COLUNAS_DISPLAY],
     column_config = {
